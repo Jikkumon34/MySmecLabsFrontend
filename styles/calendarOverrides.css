@@ -1,0 +1,82 @@
+/* ------------------------------------------------------------------ *
+ *  React‑Big‑Calendar – Student view overrides                      *
+ * ------------------------------------------------------------------ */
+
+/* 1.  Selection states
+      ----------------------------------------------------------------
+      Slot‑drag (empty grid) → transparent
+      Event click            → keep our sky‑500 colour               */
+      .rbc-slot-selection,
+      .rbc-day-slot .rbc-slot-selection {
+        background-color: transparent !important;       /* no pink overlay */
+      }
+      
+      .rbc-event.rbc-selected,
+      .rbc-day-slot .rbc-event.rbc-selected {
+        background-color: #d9dbda !important;           /* Tailwind sky‑500 */
+        color: #ffffff !important;
+      }
+      
+      /* 2.  Neutral white canvas so Tailwind background utilities show */
+      .rbc-month-view,
+      .rbc-time-view,
+      .rbc-agenda-view {
+        background: #ffffff;
+      }
+      
+      /* 3.  Soft card feel */
+      .rbc-month-view,
+      .rbc-time-view,
+      .rbc-agenda-view {
+        border-radius: 0.75rem;                         /* rounded‑xl */
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);      /* shadow‑sm */
+      }
+      
+      /* 4.  Highlight “today” with a blue underline (no fill) */
+      .rbc-today {
+        background: transparent;
+      }
+      .rbc-today::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-bottom: 3px solid rgb(14 165 233 / 0.7); /* sky‑500/70 */
+        pointer-events: none;
+      }
+      
+      /* 5.  Compact, touch‑friendly toolbar */
+      .rbc-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      
+      .rbc-toolbar .rbc-btn-group button {
+        padding: 0.25rem 0.75rem;       /* py‑1 px‑3 */
+        border-radius: 0.375rem;        /* rounded‑md */
+        background: #f3f4f6;            /* gray‑100 */
+        border: 1px solid #e5e7eb;      /* gray‑200 */
+        font-size: 0.875rem;            /* text‑sm */
+        transition: background 120ms;
+      }
+      
+      .rbc-toolbar .rbc-btn-group button:hover {
+        background: #e5e7eb;            /* gray‑200 */
+      }
+      
+      /* 6.  Mobile typography tweaks + horizontal scroll for narrow grids */
+      @media (max-width: 640px) {
+        .rbc-header,
+        .rbc-agenda-date-cell,
+        .rbc-agenda-time-cell {
+          font-size: 0.75rem;           /* text‑xs */
+        }
+        .rbc-event-content {
+          font-size: 0.75rem;
+        }
+        .rbc-calendar {
+          overflow-x: auto;
+        }
+      }
+      

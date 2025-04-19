@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <title>HappyDonates - Admin Dashboard</title>
+  <style>
+    :root {
+      --main-bg-color: #9d0069;
+      --main-text-color: #ffffff;
+      --second-text-color: #bbbdc5;
+      --second-bg-color: #edc1ef;
+      --sidebar-bg-color: linear-gradient(135deg, #ff99cc, #ffccff);
+      --sidebar-shadow-color: rgba(0, 0, 0, 0.2);
+    }
+    body {
+      background-color: white;
+    }
+    /* Custom styles for card counters remain similar */
+    .card-counter {
+      box-shadow: 2px 2px 10px #DADADA;
+      margin: 5px;
+      padding: 20px 10px;
+      background-color: #fff;
+      height: 100px;
+      border-radius: 5px;
+      transition: .3s linear all;
+      position: relative;
+    }
+    .card-counter:hover {
+      box-shadow: 4px 4px 20px #DADADA;
+      transition: .3s linear all;
+    }
+  </style>
+</head>
+<body class="bg-white">
+  <div class="flex" id="wrapper">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper" class="fixed min-h-screen w-64 -ml-64 transition-all duration-300" style="background: var(--sidebar-bg-color); box-shadow: 2px 0 10px var(--sidebar-shadow-color); color: var(--main-text-color);">
+      <div class="text-center py-4 text-xl font-bold uppercase border-b" style="color: var(--main-bg-color);">
+        HappyDonates
+      </div>
+      <div class="flex flex-col my-3">
+        <a href="{% url 'admin_home' %}" class="py-5 px-8 hover:bg-white hover:bg-opacity-10 transition-colors" style="color: var(--main-bg-color);">
+          <span class="material-icons mr-2">dashboard</span>Dashboard
+        </a>
+        <a href="{% url 'admin_user' %}" class="py-5 px-8 hover:bg-white hover:bg-opacity-10 transition-colors" style="color: var(--main-bg-color);">
+          <span class="material-icons mr-2">person</span>Users
+        </a>
+        <a href="{% url 'admin_post' %}" class="py-5 px-8 hover:bg-white hover:bg-opacity-10 transition-colors" style="color: var(--main-bg-color);">
+          <span class="material-icons mr-2">favorite</span>Post
+        </a>
+        <a href="{% url 'admin_donation_request' %}" class="py-5 px-8 hover:bg-white hover:bg-opacity-10 transition-colors" style="color: var(--main-bg-color);">
+          <span class="material-icons mr-2">volunteer_activism</span>Donations
+        </a>
+        <a href="{% url 'admin_category' %}" class="py-5 px-8 hover:bg-white hover:bg-opacity-10 transition-colors" style="color: var(--main-bg-color);">
+          <span class="material-icons mr-2">category</span>Categories
+        </a>
+        <a href="{% url 'admin_location' %}" class="py-5 px-8 hover:bg-white hover:bg-opacity-10 transition-colors" style="color: var(--main-bg-color);">
+          <span class="material-icons mr-2">location_on</span>Locations
+        </a>
+        <a href="{% url 'poster_list' %}" class="py-5 px-8 hover:bg-white hover:bg-opacity-10 transition-colors" style="color: var(--main-bg-color);">
+          <span class="material-icons mr-2">library_books</span>Add Ads
+        </a>
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper" class="w-full transition-all duration-300">
+      <nav class="flex items-center justify-between py-4 px-4 bg-transparent">
+        <div class="flex items-center">
+          <i class="fas fa-align-left text-xl mr-3" id="menu-toggle" style="color: var(--main-bg-color); cursor: pointer;"></i>
+          <h2 class="text-2xl m-0">Dashboard</h2>
+        </div>
+        <div class="relative">
+          <button id="dropdownToggle" class="flex items-center text-sm font-bold" onclick="toggleDropdown()">
+            <i class="fas fa-user mr-2"></i>Admin
+          </button>
+          <div id="dropdownMenu" class="absolute right-0 mt-2 w-48 bg-white rounded shadow-md hidden">
+            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
+            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Settings</a>
+            <a href="{% url 'admin_logout' %}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</a>
+          </div>
+        </div>
+      </nav>
+
+      <div class="container mx-auto px-4">
+        <div class="flex flex-wrap gap-3 my-2">
+          <div class="w-full md:w-1/3">
+            <div class="card-counter" style="background-color: var(--main-bg-color); color: #FFF;">
+              <i class="material-icons" style="font-size: 5em; opacity: 0.2; position: absolute; top: 15px; right: 15px;">people</i>
+              <span class="block text-3xl">{{user_count}}</span>
+              <span class="italic opacity-50 text-lg">Active Users</span>
+            </div>
+          </div>
+          <div class="w-full md:w-1/3">
+            <div class="card-counter" style="background-color: #66bb6a; color: #FFF;">
+              <i class="material-icons" style="font-size: 5em; opacity: 0.2; position: absolute; top: 15px; right: 15px;">favorite</i>
+              <span class="block text-3xl">{{post_count}}</span>
+              <span class="italic opacity-50 text-lg">Active Posts</span>
+            </div>
+          </div>
+          <div class="w-full md:w-1/3">
+            <div class="card-counter" style="background-color: #26c6da; color: #FFF;">
+              <i class="material-icons" style="font-size: 5em; opacity: 0.2; position: absolute; top: 15px; right: 15px;">volunteer_activism</i>
+              <span class="block text-3xl">{{donation_count}}</span>
+              <span class="italic opacity-50 text-lg">Donations</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chart section removed -->
+
+        <div class="my-5">
+          <h3 class="text-xl mb-3">Recent Donation Requests</h3>
+          <div class="overflow-x-auto">
+            <table class="min-w-full bg-white rounded shadow-sm">
+              <thead>
+                <tr class="bg-[var(--main-bg-color)] text-white">
+                  <th class="px-4 py-2 w-12">#</th>
+                  <th class="px-4 py-2">Title</th>
+                  <th class="px-4 py-2">User name</th>
+                  <th class="px-4 py-2">Location</th>
+                  <th class="px-4 py-2">Last date</th>
+                  <th class="px-4 py-2">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200">
+                {% for data in donation_request %}
+                <tr class="hover:bg-gray-100">
+                  <td class="px-4 py-2 text-center">{{forloop.counter}}</td>
+                  <td class="px-4 py-2">{{data.title}}</td>
+                  <td class="px-4 py-2">{{data.user.username}}</td>
+                  <td class="px-4 py-2">{{data.location.district_name}}</td>
+                  <td class="px-4 py-2">{{data.end_date}}</td>
+                  <td class="px-4 py-2">
+                    <a href="{% url 'admin_donation_detail' data.donation_id %}" class="bg-blue-500 text-white px-2 py-1 text-sm rounded">View More</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Sidebar toggle functionality
+    var wrapper = document.getElementById("wrapper");
+    var toggleButton = document.getElementById("menu-toggle");
+    toggleButton.onclick = function() {
+      wrapper.classList.toggle("toggled");
+      var sidebar = document.getElementById("sidebar-wrapper");
+      var pageContent = document.getElementById("page-content-wrapper");
+      if (wrapper.classList.contains("toggled")) {
+        sidebar.style.marginLeft = "0";
+        pageContent.style.marginLeft = "16rem"; /* 16rem equals Tailwind's w-64 */
+      } else {
+        sidebar.style.marginLeft = "-16rem";
+        pageContent.style.marginLeft = "0";
+      }
+    };
+
+    // Dropdown toggle functionality
+    function toggleDropdown() {
+      var dropdown = document.getElementById('dropdownMenu');
+      dropdown.classList.toggle('hidden');
+    }
+
+    // Close dropdown if clicking outside
+    document.addEventListener('click', function(event) {
+      var dropdown = document.getElementById('dropdownMenu');
+      var toggle = document.getElementById('dropdownToggle');
+      if (!toggle.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

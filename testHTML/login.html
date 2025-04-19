@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmecLabs - Login</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gray-50">
+  <!-- Navbar -->
+  <nav class="bg-white border-b border-gray-100 py-4 fixed w-full top-0 z-50">
+    <div class="container mx-auto px-6 flex justify-between items-center">
+      <div class="text-2xl font-bold">
+        <span class="bg-gradient-to-br from-[#2E3192] to-[#00A99D] bg-clip-text text-transparent">
+          My SmecLabs
+        </span>
+      </div>
+      <div class="hidden md:flex space-x-8 items-center">
+        <a href="#" class="text-gray-600 hover:text-[#00A99D] transition">
+          Courses
+        </a>
+        <a href="#" class="text-gray-600 hover:text-[#00A99D] transition">
+          Paths
+        </a>
+        <a href="#" class="text-gray-600 hover:text-[#00A99D] transition">
+          Resources
+        </a>
+        <button class="bg-[#0071BC] hover:bg-[#00A99D] text-white px-6 py-2 rounded-full ml-4 transition-all duration-300 hover:-translate-y-0.5">
+          Get Started
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Area -->
+  <div class="pt-24 flex min-h-screen">
+    <!-- Left Side Content -->
+    <div class="hidden lg:flex lg:w-1/2  items-center justify-center">
+      <!-- Replace this with your desired left side content -->
+      <div class="p-12">
+        <h2 class="text-4xl font-bold text-[#2E3192] mb-4">Welcome to SmecLabs</h2>
+        <p class="text-[#606060] text-lg">
+          Discover a wide range of courses, paths, and resources tailored to help you succeed.
+          Enhance your skills and join our community of passionate learners.
+        </p>
+      </div>
+    </div>
+
+    <!-- Right Side: Login Form -->
+    <div class="flex w-full lg:w-1/2 items-center justify-center px-4">
+      <div class="p-8 rounded-lg shadow-2xl w-full max-w-md">
+        <!-- Header Section -->
+        <div class="text-center mb-8">
+          <h1 class="text-3xl font-bold text-[#2E3192] mb-2">Welcome Back</h1>
+          <p class="text-[#606060]">Please sign in to continue</p>
+        </div>
+
+        <!-- Login Form -->
+        <form class="space-y-6">
+          <!-- Email Input -->
+          <div>
+            <label class="block text-[#606060] text-sm font-semibold mb-2">Email</label>
+            <input type="email" 
+              class="w-full px-4 py-2 border border-[#606060] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00A99D] focus:border-transparent transition-colors" />
+          </div>
+
+          <!-- Password Input -->
+          <div>
+            <label class="block text-[#606060] text-sm font-semibold mb-2">Password</label>
+            <input type="password" 
+              class="w-full px-4 py-2 border border-[#606060] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00A99D] focus:border-transparent transition-colors" />
+          </div>
+
+          <!-- Remember Me & Forgot Password -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <input type="checkbox" class="h-4 w-4 text-[#0071BC] focus:ring-[#0071BC]" />
+              <label class="ml-2 text-sm text-[#606060]">Remember me</label>
+            </div>
+            <a href="#" class="text-sm text-[#00A99D] hover:text-[#0071BC]">Forgot password?</a>
+          </div>
+
+          <!-- Login Button -->
+          <button type="submit" 
+            class="w-full bg-[#00A99D] text-white py-2 rounded-lg hover:bg-[#0071BC] transition-colors font-semibold">
+            Sign In
+          </button>
+        </form>
+
+        <!-- Sign Up Link -->
+        <div class="mt-6 text-center">
+          <p class="text-[#606060]">
+            Don't have an account? 
+            <a href="#" class="text-[#0071BC] hover:text-[#2E3192] font-semibold">Sign up</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
