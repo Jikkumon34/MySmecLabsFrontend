@@ -11,9 +11,8 @@ export type NavLink = {
       { label: "Courses", icon: "school", href: "/student/courses" },
       { label: "Assignments", icon: "assignment", href: "/student/assignments" },
       { label: "Syllabus", icon: "menu_book", href: "/student/syllabus" },
-      { label: "Calendar", icon: "calendar_today", href: "/student/calendar" }, // ✅ New calendar link added
-
-
+      { label: "Calendar", icon: "calendar_today", href: "/student/calendar" },
+      { label: "Resources", icon: "folder", href: "/student/resources" },
       { label: "Staff", icon: "people", href: "/student/staff" },
       { label: "Grades", icon: "grade", href: "/student/grades" },
       { label: "Profile", icon: "people", href: "/student/profile" },
