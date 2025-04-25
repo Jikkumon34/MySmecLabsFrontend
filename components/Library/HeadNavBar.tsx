@@ -4,9 +4,9 @@ import { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-const Navbar: FC = () => {
+const HeadNavbar: FC = () => {
   return (
-    <nav className="bg-white border-b border-gray-100 py-4 fixed w-full top-0 z-50">
+    <nav className="bg-white border-b border-gray-100 py-4 fixed top-0 left-0 right-0 h-12 flex items-center justify-between px-4 z-[60]">
       <div className="container mx-auto px-6 flex justify-between items-center">
         {/* Logo + Brand */}
         <Link href="/" className="flex items-center space-x-3">
@@ -44,4 +44,4 @@ const Navbar: FC = () => {
   );
 };
 
-export default Navbar;
+export default HeadNavbar;

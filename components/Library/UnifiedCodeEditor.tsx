@@ -88,6 +88,7 @@ export default function UnifiedCodeEditor({
   );
   const [output, setOutput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [editorLayout, setEditorLayout] = useState<'horizontal' | 'vertical'>('horizontal');
 
   // When the language changes, update the code if no initial code is provided
   useEffect(() => {
@@ -103,20 +104,46 @@ export default function UnifiedCodeEditor({
     }
   }, [initialCode]);
 
+  // Handle screen resize for responsive layout
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setEditorLayout('vertical');
+      } else {
+        setEditorLayout('horizontal');
+      }
+    };
+
+    // Set initial layout
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleEditorWillMount = (monaco: Monaco) => {
-    monaco.editor.defineTheme('modern-dark', {
+    monaco.editor.defineTheme('smeclabs-theme', {
       base: 'vs-dark',
       inherit: true,
       rules: [
-        { token: '', foreground: 'E0E0E0', background: '1A1A1A' },
-        { token: 'comment', foreground: '6A9955' },
+        { token: '', foreground: 'E0E0E0', background: '132243' },
+        { token: 'comment', foreground: '6AC4B9' },
+        { token: 'keyword', foreground: '38B6FF' },
+        { token: 'string', foreground: '7ED8D4' },
+        { token: 'number', foreground: 'FF8B85' },
       ],
       colors: {
-        'editor.background': '#1A1A1A',
-        'editor.lineHighlightBackground': '#2A2A2A',
-        'editorLineNumber.foreground': '#858585',
-        'editorCursor.foreground': '#A7A7A7',
-        'editor.selectionBackground': '#264F78',
+        'editor.background': '#0D1B30',
+        'editor.foreground': '#E0E0E0',
+        'editor.lineHighlightBackground': '#1A2A42',
+        'editorLineNumber.foreground': '#5D7B9D',
+        'editorCursor.foreground': '#00A99D',
+        'editor.selectionBackground': '#2E3192CC',
+        'editor.selectionHighlightBackground': '#2E319233',
+        'editor.inactiveSelectionBackground': '#00A99D33',
+        'editorSuggestWidget.background': '#132243',
+        'editorSuggestWidget.border': '#2E3192',
+        'editorSuggestWidget.highlightForeground': '#00A99D',
       },
     });
   };
@@ -146,81 +173,73 @@ export default function UnifiedCodeEditor({
   };
 
   return (
-    <div className="flex flex-col h-screen bg-neutral-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-      {/* Header */}
-      <header className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-gradient-to-br from-purple-600 to-blue-500 text-white rounded-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M14.5 12.641v5.484a3.5 3.5 0 11-5 0v-6.989L5.03 8.158a5 5 0 015.94-5.94 5 5 0 015.94 5.94l-4.47 4.47z" />
-            </svg>
-          </div>
-          <h1 className="text-lg font-semibold">CodeCanvas</h1>
-        </div>
-
-        <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
-          <div className="flex items-center gap-2 w-full md:w-auto">
-            <span className="px-3 py-1.5 bg-gray-100 dark:bg-gray-700 rounded-full text-xs font-medium">
-              {LANGUAGE_ICONS[language]}
-            </span>
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-              disabled={!allowLanguageChange}
-              className="w-full md:w-48 px-3 py-1.5 bg-white dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 text-sm"
-            >
-              {Object.keys(LANGUAGE_VERSIONS).map((lang) => (
-                <option key={lang} value={lang}>
-                  {lang.charAt(0).toUpperCase() + lang.slice(1)} {LANGUAGE_VERSIONS[lang]}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <button
-            onClick={handleRunCode}
-            disabled={isLoading}
-            className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm ${
-              isLoading
-                ? 'bg-purple-400 dark:bg-purple-600 text-white cursor-wait'
-                : 'bg-purple-600 hover:bg-purple-700 text-white transition-colors'
-            }`}
-          >
-            {isLoading ? (
-              <>
-                <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                <span>Running</span>
-              </>
-            ) : (
-              <>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-                <span>Run Code</span>
-              </>
-            )}
-          </button>
-        </div>
-      </header>
-
+    <div className="flex flex-col h-full min-h-screen w-full bg-gray-50 dark:bg-[#0A1525] text-gray-900 dark:text-gray-100 pt-14">
       {/* Main Content */}
-      <div className="flex flex-col md:flex-row flex-1 overflow-hidden bg-white dark:bg-gray-800">
+      <div className={`flex flex-1 overflow-hidden ${editorLayout === 'vertical' ? 'flex-col' : 'flex-row'}`}>
         {/* Editor */}
-        <div className="flex-1 flex flex-col border-b md:border-r border-gray-200 dark:border-gray-700">
-          <div className="px-4 py-3 bg-gray-50 dark:bg-gray-850 border-b border-gray-200 dark:border-gray-700 text-sm font-medium">
-            Editor
+        <div className={`flex-1 flex flex-col ${editorLayout === 'vertical' ? 'border-b' : 'border-r'} border-gray-200 dark:border-[#2E3192]/30 min-h-[50vh]`}>
+          <div className="px-4 py-3 bg-gray-50 dark:bg-[#132243]/50 border-b border-gray-200 dark:border-[#2E3192]/30 text-sm font-medium flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-gray-700 dark:text-[#00A99D]">Editor</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                {code.split('\n').length} lines | {code.length} chars
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <span className="flex items-center justify-center h-8 px-2 bg-gradient-to-r from-[#2E3192]/20 to-[#00A99D]/20 border border-[#00A99D]/30 rounded-md text-xs font-medium text-[#00A99D]">
+                  {LANGUAGE_ICONS[language]}
+                </span>
+                <select
+                  value={language}
+                  onChange={(e) => setLanguage(e.target.value)}
+                  disabled={!allowLanguageChange}
+                  className="w-32 sm:w-40 px-2 py-1.5 bg-white dark:bg-[#0D1B30] rounded-md border border-gray-300 dark:border-[#2E3192]/50 text-sm focus:outline-none focus:ring-1 focus:ring-[#00A99D] transition-all"
+                >
+                  {Object.keys(LANGUAGE_VERSIONS).map((lang) => (
+                    <option key={lang} value={lang}>
+                      {lang.charAt(0).toUpperCase() + lang.slice(1)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <button
+                onClick={handleRunCode}
+                disabled={isLoading}
+                className={`flex items-center justify-center gap-1 px-3 py-1.5 rounded-md font-medium text-xs ${
+                  isLoading
+                    ? 'bg-[#0071BC]/70 text-white cursor-wait'
+                    : 'bg-[#0071BC] hover:bg-[#00A99D] text-white transition-all duration-300 hover:-translate-y-0.5 shadow-sm'
+                }`}
+              >
+                {isLoading ? (
+                  <>
+                    <svg className="animate-spin h-3 w-3 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    <span>Running</span>
+                  </>
+                ) : (
+                  <>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                    <span>Run</span>
+                  </>
+                )}
+              </button>
+            </div>
           </div>
-          <div className="flex-1 overflow-hidden">
+          <div className="flex-1 h-full w-full overflow-hidden">
             <Editor
               height="100%"
-              theme="modern-dark"
+              width="100%"
+              theme="smeclabs-theme"
               language={language}
               value={code}
               onChange={(value) => setCode(value || '')}
@@ -229,26 +248,32 @@ export default function UnifiedCodeEditor({
                 minimap: { enabled: false },
                 fontSize: 14,
                 scrollBeyondLastLine: false,
-                padding: { top: 20 },
+                padding: { top: 15 },
                 lineNumbersMinChars: 3,
                 glyphMargin: false,
                 renderWhitespace: 'selection',
+                cursorBlinking: 'smooth',
+                smoothScrolling: true,
+                mouseWheelZoom: true,
+                fontFamily: "'JetBrains Mono', 'Fira Code', Menlo, Monaco, 'Courier New', monospace",
+                fontLigatures: true,
+                automaticLayout: true,
               }}
             />
           </div>
         </div>
 
         {/* Output */}
-        <div className="flex-1 flex flex-col">
-          <div className="px-4 py-3 bg-gray-50 dark:bg-gray-850 border-b border-gray-200 dark:border-gray-700 text-sm font-medium">
-            Output
+        <div className="flex-1 flex flex-col min-h-[50vh]">
+          <div className="px-4 py-3 bg-gray-50 dark:bg-[#132243]/50 border-b border-gray-200 dark:border-[#2E3192]/30 text-sm font-medium">
+            <span className="text-gray-700 dark:text-[#00A99D]">Output</span>
           </div>
-          <div className="flex-1 overflow-auto p-4 bg-white dark:bg-gray-800">
-            <pre className="font-mono text-sm whitespace-pre-wrap">
-              {output || (isLoading ? '$ Running your code...' : 'Click "Run Code" to execute your program')}
+          <div className="flex-1 overflow-auto p-4 bg-white dark:bg-[#0D1B30] border-l border-gray-200 dark:border-[#2E3192]/30">
+            <pre className="font-mono text-sm whitespace-pre-wrap text-gray-800 dark:text-gray-200">
+              {output || (isLoading ? '$ Running your code...' : '$ Click "Run Code" to execute your program')}
             </pre>
             {output && !isLoading && (
-              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-xs text-gray-500 dark:text-gray-400">
+              <div className="mt-4 pt-4 border-t border-gray-200 dark:border-[#2E3192]/30 text-xs text-gray-500 dark:text-[#00A99D]/70">
                 Executed at {new Date().toLocaleTimeString()}
               </div>
             )}
@@ -257,13 +282,29 @@ export default function UnifiedCodeEditor({
       </div>
 
       {/* Status Bar */}
-      <div className="px-4 py-2 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 text-xs text-gray-600 dark:text-gray-400 flex flex-col md:flex-row justify-between">
-        <div className="mb-1 md:mb-0">
-          {language.charAt(0).toUpperCase() + language.slice(1)} {LANGUAGE_VERSIONS[language]}
+      <div className="px-4 py-2 bg-white dark:bg-[#132243] border-t border-gray-200 dark:border-[#2E3192]/30 text-xs text-gray-600 dark:text-gray-400 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="inline-block w-3 h-3 rounded-full bg-gradient-to-r from-[#2E3192] to-[#00A99D]"></span>
+          <span>{language.charAt(0).toUpperCase() + language.slice(1)} {LANGUAGE_VERSIONS[language]}</span>
         </div>
-        <div className="flex gap-4">
-          <span>{code.split('\n').length} lines</span>
-          <span>{code.length} chars</span>
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={() => setEditorLayout(editorLayout === 'horizontal' ? 'vertical' : 'horizontal')}
+            className="p-1 rounded hover:bg-gray-200 dark:hover:bg-[#0D1B30] transition-colors"
+            title="Toggle layout"
+          >
+            {editorLayout === 'horizontal' ? (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <line x1="12" y1="3" x2="12" y2="21" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+              </svg>
+            )}
+          </button>
         </div>
       </div>
     </div>

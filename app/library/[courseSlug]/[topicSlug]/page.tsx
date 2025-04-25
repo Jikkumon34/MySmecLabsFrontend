@@ -65,7 +65,7 @@ export async function generateMetadata({ params }: TopicPageProps) {
   const data = await fetchGraphQL<{ libraryTopic: Topic }>(query, variables);
   const topic = data.libraryTopic;
   return {
-    title: topic.title ? `${topic.title} | LudoCode` : 'Topic | LudoCode',
+    title: topic.title ? `${topic.title} | SmecLabs` : 'Topic |  SmecLabs',
   };
 }
 

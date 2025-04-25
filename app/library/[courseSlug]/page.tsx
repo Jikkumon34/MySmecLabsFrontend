@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: CoursePageProps) {
   const data: { libraryCourse: Course } = await fetchGraphQL(query, variables);
   const course = data.libraryCourse;
   return {
-    title: course.title ? `${course.title} | LudoCode` : 'Course | LudoCode',
+    title: course.title ? `${course.title} | SmecLabs` : 'Course | SmecLabs',
   };
 }
 

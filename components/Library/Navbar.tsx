@@ -9,7 +9,7 @@ interface NavbarProps {
 
 export default function Navbar({ courses }: NavbarProps) {
   return (
-<nav className="navbar text-white fixed top-12 left-0 right-0 h-10 flex items-center z-50 p-2">
+<nav className="navbar bg-[#1a1b39]  text-white fixed top-12 left-0 right-0 h-10 flex items-center z-50 p-2">
 
       <div className="flex items-center w-full px-4">
         {/* Mobile hamburger placeholder if needed */}
@@ -30,7 +30,7 @@ export default function Navbar({ courses }: NavbarProps) {
             {courses.map((course) => (
               <li key={course.id}>
                 <Link
-                  href={`library/${course.slug}`}
+                  href={`/library/${course.slug}`}
                   className="text-white hover:underline"
                 >
                   {course.title}

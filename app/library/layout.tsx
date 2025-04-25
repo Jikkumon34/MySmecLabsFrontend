@@ -1,6 +1,7 @@
 import Navbar from "@/components/Library/Navbar";
+import HeadNavbar from "@/components/Library/HeadNavBar";
 import { ReactNode } from "react";
-import HeaderNavbar from "@/components/Library/HeaderNavbar";
+// import HeaderNavbar from "@/components/Library/HeaderNavbar";
 import { Course } from "@/types/types";
 import Footer from '@/components/Library/Footer';
 import { fetchGraphQL } from '@/lib/graphql';
@@ -24,7 +25,7 @@ export default async function MainLayout({ children }: { children: ReactNode }) 
 
   return (
     <div className="min-h-screen">
-      <HeaderNavbar />
+      <HeadNavbar />
       <Navbar courses={courses} />
       {/* 
         The pt-28 ensures our main content starts 
