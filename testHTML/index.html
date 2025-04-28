@@ -1,200 +1,709 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Student Dashboard</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-  <style>
-    .sidebar-transition { transition: all 0.3s ease; }
-    @media (max-width: 768px) {
-      #sidebar { transform: translateX(-100%); position: fixed; z-index: 40; }
-      #sidebar.show { transform: translateX(0); }
-      #main-content { margin-left: 0 !important; width: 100% !important; }
-    }
-  </style>
-</head>
-<body class="bg-gray-50">
-  <div class="flex relative" id="wrapper">
-    <!-- Sidebar -->
-    <aside id="sidebar" class="sidebar-transition bg-gradient-to-b from-[#2E3192] to-[#0071BC] w-64 h-screen shadow-lg fixed">
-      <div class="p-4">
-        <h2 class="text-white text-2xl font-bold text-center">EduPortal</h2>
-      </div>
-      <nav class="mt-6">
-        <ul class="space-y-2 px-4">
-          <li>
-            <a href="#" class="flex items-center space-x-3 text-white p-3 rounded-lg hover:bg-white/10 bg-white/10">
-              <span class="material-icons">dashboard</span>
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="flex items-center space-x-3 text-white p-3 rounded-lg hover:bg-white/10">
-              <span class="material-icons">school</span>
-              <span>Courses</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="flex items-center space-x-3 text-white p-3 rounded-lg hover:bg-white/10">
-              <span class="material-icons">assignment</span>
-              <span>Assignments</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="flex items-center space-x-3 text-white p-3 rounded-lg hover:bg-white/10">
-              <span class="material-icons">schedule</span>
-              <span>Schedule</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="flex items-center space-x-3 text-white p-3 rounded-lg hover:bg-white/10">
-              <span class="material-icons">grade</span>
-              <span>Grades</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </aside>
-    <!-- Overlay for mobile -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black opacity-50 z-30 hidden" onclick="closeSidebar()"></div>
-    <!-- Main Content -->
-    <div id="main-content" class="flex-1 sidebar-transition md:ml-64 w-full">
-      <!-- Navbar -->
-      <nav class="bg-white shadow-sm w-full">
-        <div class="flex justify-between items-center px-4 md:px-6 py-4">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Dashboard</title>
+
+    <!-- Tailwind & FontAwesome -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+    <!-- Fonts & Custom Styles -->
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f9fafb;
+      }
+
+      /* --- Re‑usable utility classes --- */
+      .gradient-bg {
+        background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+      }
+
+      .card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        transition: all 0.2s;
+      }
+      .card:hover {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      .progress-bar {
+        height: 4px;
+        background: #e5e7eb;
+        border-radius: 2px;
+      }
+      .progress-value {
+        height: 100%;
+        background: #4f46e5;
+        border-radius: 2px;
+      }
+
+      /* Circular progress */
+      .progress-ring {
+        transform: rotate(-90deg);
+        transform-origin: 50% 50%;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-50">
+    <!-- ======= Header / Navbar ======= -->
+    <nav class="bg-white shadow-sm border-b border-gray-200">
+      <div class="container mx-auto px-4 py-3">
+        <div class="flex items-center justify-between h-16">
+          <!-- Brand -->
           <div class="flex items-center">
-            <button id="toggleSidebar" class="text-[#606060] hover:text-[#2E3192]">
-              <span class="material-icons text-2xl">menu</span>
-            </button>
-            <h1 class="text-xl font-semibold text-[#606060] ml-4">Student Dashboard</h1>
+            <span class="text-indigo-600 font-bold text-xl">eduDash</span>
           </div>
-          <div class="flex items-center">
+          <!-- Actions -->
+          <div class="flex items-center space-x-4">
+            <!-- Notifications Icon -->
             <div class="relative">
-              <button class="flex items-center space-x-2 text-[#606060] hover:text-[#2E3192]">
-                <span class="material-icons">account_circle</span>
-                <span class="hidden md:inline">John Doe</span>
-                <span class="material-icons">expand_more</span>
+              <button class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-bell text-lg"></i>
+                <span
+                  class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center"
+                  >3</span
+                >
               </button>
-              <div class="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg py-2 hidden">
-                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Profile</a>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
-                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Logout</a>
+            </div>
+            <!-- Avatar dropdown (static for now) -->
+            <div class="flex items-center space-x-2">
+              <div
+                class="bg-gradient-to-r from-indigo-500 to-purple-600 w-8 h-8 rounded-full flex items-center justify-center text-white font-medium text-sm"
+              >
+                JD
               </div>
+              <span class="font-medium">Jane Doe</span>
+              <i class="fas fa-chevron-down text-xs"></i>
             </div>
           </div>
         </div>
-      </nav>
-      <!-- Main Content Area -->
-      <main class="p-4 md:p-6">
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6">
-          <div class="bg-[#00A99D] p-4 md:p-6 rounded-lg text-white shadow-lg">
-            <div class="flex justify-between items-center">
-              <div>
-                <p class="text-2xl font-bold">4</p>
-                <p>Current Courses</p>
-              </div>
-              <span class="material-icons text-4xl">book</span>
-            </div>
-          </div>
-          <div class="bg-[#0071BC] p-4 md:p-6 rounded-lg text-white shadow-lg">
-            <div class="flex justify-between items-center">
-              <div>
-                <p class="text-2xl font-bold">3</p>
-                <p>Pending Assignments</p>
-              </div>
-              <span class="material-icons text-4xl">assignment</span>
-            </div>
-          </div>
-          <div class="bg-[#2E3192] p-4 md:p-6 rounded-lg text-white shadow-lg">
-            <div class="flex justify-between items-center">
-              <div>
-                <p class="text-2xl font-bold">89%</p>
-                <p>Overall Grade</p>
-              </div>
-              <span class="material-icons text-4xl">assessment</span>
-            </div>
-          </div>
-          <div class="bg-[#606060] p-4 md:p-6 rounded-lg text-white shadow-lg">
-            <div class="flex justify-between items-center">
-              <div>
-                <p class="text-2xl font-bold">12d</p>
-                <p>Next Exam</p>
-              </div>
-              <span class="material-icons text-4xl">event</span>
-            </div>
-          </div>
+      </div>
+    </nav>
+
+    <!-- ======= Main ======= -->
+    <main class="max-w-7xl mx-auto px-4 py-6">
+      <!-- Welcome / Actions -->
+      <div class="flex justify-between items-center mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+          <p class="text-gray-500">Computer Science Department • Spring 2025</p>
         </div>
-        <!-- Recent Activities -->
-        <div class="bg-white rounded-lg shadow-lg p-4 md:p-6">
-          <h3 class="text-xl font-semibold mb-4 text-[#606060]">Recent Activities</h3>
-          <div class="overflow-x-auto">
-            <table class="w-full">
-              <thead class="bg-[#2E3192] text-white">
-                <tr>
-                  <th class="p-2 md:p-3 text-left">Course</th>
-                  <th class="p-2 md:p-3 text-left">Activity</th>
-                  <th class="p-2 md:p-3 text-left">Deadline</th>
-                  <th class="p-2 md:p-3 text-left">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="border-b hover:bg-gray-50">
-                  <td class="p-2 md:p-3">Mathematics</td>
-                  <td class="p-2 md:p-3">Algebra Assignment</td>
-                  <td class="p-2 md:p-3">2023-12-15</td>
-                  <td class="p-2 md:p-3 text-[#00A99D]">Submitted</td>
-                </tr>
-                <tr class="border-b hover:bg-gray-50">
-                  <td class="p-2 md:p-3">Physics</td>
-                  <td class="p-2 md:p-3">Chapter 5 Quiz</td>
-                  <td class="p-2 md:p-3">2023-12-18</td>
-                  <td class="p-2 md:p-3 text-[#0071BC]">Pending</td>
-                </tr>
-                <tr class="border-b hover:bg-gray-50">
-                  <td class="p-2 md:p-3">Chemistry</td>
-                  <td class="p-2 md:p-3">Lab Report</td>
-                  <td class="p-2 md:p-3">2023-12-20</td>
-                  <td class="p-2 md:p-3 text-[#606060]">Not Started</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="flex space-x-2">
+          <button
+            class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm hover:shadow"
+          >
+            Request Help
+          </button>
+          <button
+            class="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border border-gray-200 shadow-sm hover:shadow"
+          >
+            <i class="fas fa-cog mr-1"></i> Settings
+          </button>
         </div>
-      </main>
-    </div>
-  </div>
-  <script>
-    const sidebar = document.getElementById('sidebar'),
-          mainContent = document.getElementById('main-content'),
-          toggleButton = document.getElementById('toggleSidebar'),
-          overlay = document.getElementById('sidebar-overlay');
+      </div>
 
-    const toggleSidebar = () => {
-      if (window.innerWidth < 768) {
-        sidebar.classList.toggle('show');
-        overlay.classList.toggle('hidden');
-      } else {
-        sidebar.classList.toggle('-translate-x-full');
-        mainContent.classList.toggle('md:ml-64');
-        mainContent.classList.toggle('md:ml-0');
-      }
-    };
+      <!-- ======= Grid Layout ======= -->
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <!-- ---------- Main Content (3 columns) ---------- -->
+        <div class="lg:col-span-3 space-y-6">
+          <!-- === Stats cards === -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <!-- Active Courses -->
+            <div class="card p-4 hover:shadow-md transition-all duration-200">
+              <p class="text-sm text-gray-500 mb-1">Active Courses</p>
+              <div class="flex items-center justify-between mt-2">
+                <p class="text-2xl font-bold text-gray-800">5</p>
+                <i class="fas fa-book text-indigo-600"></i>
+              </div>
+              <div class="text-xs text-green-500 mt-1">
+                <i class="fas fa-arrow-up mr-1"></i> 1 more than last semester
+              </div>
+            </div>
 
-    const closeSidebar = () => {
-      sidebar.classList.remove('show');
-      overlay.classList.add('hidden');
-    };
+            <!-- Completed -->
+            <div class="card p-4 hover:shadow-md transition-all duration-200">
+              <p class="text-sm text-gray-500 mb-1">Completed</p>
+              <div class="flex items-center justify-between mt-2">
+                <p class="text-2xl font-bold text-gray-800">3</p>
+                <i class="fas fa-check text-green-600"></i>
+              </div>
+              <div class="text-xs text-gray-400 mt-1">
+                <i class="fas fa-check mr-1"></i> All requirements met
+              </div>
+            </div>
 
-    toggleButton.addEventListener('click', toggleSidebar);
-    window.addEventListener('resize', () => {
-      if (window.innerWidth >= 768) {
-        sidebar.classList.remove('show');
-        overlay.classList.add('hidden');
-      }
-    });
-  </script>
-</body>
+            <!-- Pending -->
+            <div class="card p-4 hover:shadow-md transition-all duration-200">
+              <p class="text-sm text-gray-500 mb-1">Pending</p>
+              <div class="flex items-center justify-between mt-2">
+                <p class="text-2xl font-bold text-indigo-600">2</p>
+                <i class="fas fa-clock text-yellow-600"></i>
+              </div>
+              <div class="text-xs text-orange-500 mt-1">
+                <i class="fas fa-clock mr-1"></i> 2 due this week
+              </div>
+            </div>
+
+            <!-- Avg Grade -->
+            <div class="card p-4 hover:shadow-md transition-all duration-200">
+              <p class="text-sm text-gray-500 mb-1">Avg. Grade</p>
+              <div class="flex items-center justify-between mt-2">
+                <p class="text-2xl font-bold text-green-600">B+</p>
+                <i class="fas fa-star text-purple-600"></i>
+              </div>
+              <div class="text-xs text-green-500 mt-1">
+                <i class="fas fa-arrow-up mr-1"></i> Improved from last term
+              </div>
+            </div>
+          </div>
+
+          <!-- === Course Progress === -->
+          <section class="card p-6">
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <h2 class="text-lg font-bold text-gray-800">Course Progress</h2>
+                <p class="text-sm text-gray-500">Track your active courses progress</p>
+              </div>
+              <div class="flex items-center">
+                <select class="text-sm border rounded-lg px-3 py-1.5 bg-gray-50 mr-2">
+                  <option>All Courses</option>
+                  <option>This Semester</option>
+                </select>
+                <button class="text-indigo-600 font-medium text-sm">View All</button>
+              </div>
+            </div>
+
+            <!-- Progress bars list -->
+            <div class="space-y-6">
+              <!-- Python Full Stack -->
+              <div>
+                <div class="flex justify-between mb-2">
+                  <div class="flex items-start">
+                    <div
+                      class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 mr-3"
+                    >
+                      <i class="fas fa-code text-lg"></i>
+                    </div>
+                    <div>
+                      <span class="text-gray-800 font-medium">Python Full Stack</span>
+                      <div class="text-gray-500 text-sm">Dr. Smith</div>
+                    </div>
+                  </div>
+                  <span class="text-indigo-600 font-medium">70%</span>
+                </div>
+                <div class="progress-bar w-full rounded-full">
+                  <div class="progress-value rounded-full" style="width: 70%"></div>
+                </div>
+              </div>
+
+              <!-- React Module -->
+              <div>
+                <div class="flex justify-between mb-2">
+                  <div class="flex items-start">
+                    <div
+                      class="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 mr-3"
+                    >
+                      <i class="fas fa-laptop-code text-lg"></i>
+                    </div>
+                    <div>
+                      <span class="text-gray-800 font-medium">React Module</span>
+                      <div class="text-gray-500 text-sm">Ms. Lee</div>
+                    </div>
+                  </div>
+                  <span class="text-indigo-600 font-medium">45%</span>
+                </div>
+                <div class="progress-bar w-full rounded-full">
+                  <div class="progress-value rounded-full" style="width: 45%"></div>
+                </div>
+              </div>
+
+              <!-- Database Management -->
+              <div>
+                <div class="flex justify-between mb-2">
+                  <div class="flex items-start">
+                    <div
+                      class="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center text-green-600 mr-3"
+                    >
+                      <i class="fas fa-database text-lg"></i>
+                    </div>
+                    <div>
+                      <span class="text-gray-800 font-medium">Database Management</span>
+                      <div class="text-gray-500 text-sm">Prof. Johnson</div>
+                    </div>
+                  </div>
+                  <span class="text-indigo-600 font-medium">85%</span>
+                </div>
+                <div class="progress-bar w-full rounded-full">
+                  <div class="progress-value rounded-full" style="width: 85%"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- === Assignments Table === -->
+          <section class="card overflow-hidden">
+            <!-- Header -->
+            <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+              <div>
+                <h2 class="text-lg font-bold text-gray-800">Assignments & Deadlines</h2>
+                <p class="text-sm text-gray-500">Track your upcoming work and submissions</p>
+              </div>
+              <div class="flex space-x-2">
+                <select class="text-sm border rounded-lg px-3 py-1.5 bg-gray-50">
+                  <option>All Status</option>
+                  <option>Pending</option>
+                  <option>Submitted</option>
+                </select>
+                <button
+                  class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-lg transition-colors duration-200"
+                >
+                  New Assignment
+                </button>
+              </div>
+            </div>
+
+            <!-- Table -->
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Title
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Course
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Due Date
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Status
+                    </th>
+                    <th
+                      class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <!-- Build REST API -->
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm font-medium text-gray-900">Build REST API</div>
+                      <div class="text-xs text-gray-500">Backend Project</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      Python Full Stack
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-red-500">May 3, 2025</div>
+                      <div class="text-xs text-gray-500">6 days left</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800"
+                      >
+                        In Progress
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                      <button
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3 py-1.5 rounded-lg transition-colors duration-200"
+                      >
+                        Submit
+                      </button>
+                    </td>
+                  </tr>
+
+                  <!-- React Quiz -->
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm font-medium text-gray-900">React Quiz</div>
+                      <div class="text-xs text-gray-500">Frontend Assessment</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      React Module
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-500">May 10, 2025</div>
+                      <div class="text-xs text-gray-500">13 days left</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800"
+                      >
+                        Pending
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                      <button
+                        class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs px-3 py-1.5 rounded-lg transition-colors duration-200"
+                      >
+                        View
+                      </button>
+                    </td>
+                  </tr>
+
+                  <!-- Database Schema -->
+                  <tr>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm font-medium text-gray-900">Database Schema</div>
+                      <div class="text-xs text-gray-500">Mid-term Project</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      Database Management
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <div class="text-sm text-gray-500">Apr 26, 2025</div>
+                      <div class="text-xs text-red-500">2 days overdue</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                      <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+                      >
+                        Completed
+                      </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                      <button
+                        class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs px-3 py-1.5 rounded-lg transition-colors duration-200"
+                      >
+                        Review
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Footer link -->
+            <div class="px-6 py-3 bg-gray-50 text-right">
+              <button
+                class="text-sm text-indigo-600 hover:text-indigo-800 flex items-center float-right"
+              >
+                View all assignments <i class="fas fa-arrow-right ml-1 text-xs"></i>
+              </button>
+            </div>
+          </section>
+        </div>
+
+        <!-- ---------- Sidebar (1 column) ---------- -->
+        <aside class="space-y-6">
+          <!-- === Profile Stats === -->
+          <div
+            class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-md p-6 text-white"
+          >
+            <div class="flex items-center mb-4">
+              <div
+                class="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center border-2 border-white/70"
+              >
+                <span class="text-xl font-bold">JD</span>
+              </div>
+              <div class="ml-4">
+                <h2 class="text-xl font-bold">Jane Doe</h2>
+                <p class="text-indigo-100">Computer Science</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-3 gap-2 mb-2">
+              <div class="text-center p-2 bg-white/10 rounded-lg">
+                <div class="text-xl font-bold">B+</div>
+                <div class="text-xs text-indigo-100">Avg. Grade</div>
+              </div>
+              <div class="text-center p-2 bg-white/10 rounded-lg">
+                <div class="text-xl font-bold">5</div>
+                <div class="text-xs text-indigo-100">Courses</div>
+              </div>
+              <div class="text-center p-2 bg-white/10 rounded-lg">
+                <div class="text-xl font-bold">8</div>
+                <div class="text-xs text-indigo-100">Projects</div>
+              </div>
+            </div>
+            <button
+              class="bg-white/20 hover:bg-white/30 text-white w-full py-2 rounded-lg text-sm mt-4 transition-colors duration-200"
+            >
+              View Full Profile
+            </button>
+          </div>
+
+          <!-- === Upcoming Schedule === -->
+          <section class="card p-6">
+            <h2 class="text-lg font-bold text-gray-800 mb-4">Upcoming Schedule</h2>
+
+            <!-- Events -->
+            <div class="space-y-3">
+              <!-- Today -->
+              <div class="flex p-3 rounded-lg border-l-4 border-indigo-500 bg-indigo-50">
+                <div class="mr-4 flex flex-col items-center justify-center">
+                  <div class="text-xs font-bold bg-indigo-100 text-indigo-800 rounded-md px-2 py-1 mb-1">
+                    TODAY
+                  </div>
+                  <div class="text-sm font-medium">10:00</div>
+                </div>
+                <div>
+                  <div class="text-sm font-medium text-gray-800">Python Unit 3</div>
+                  <div class="text-xs text-gray-500">API Development</div>
+                  <div class="text-xs text-gray-500 mt-1 flex items-center">
+                    <i class="fas fa-user-circle text-indigo-400 mr-1"></i> Dr. Smith
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tuesday -->
+              <div class="flex p-3 rounded-lg border-l-4 border-gray-300 bg-gray-50">
+                <div class="mr-4 flex flex-col items-center justify-center">
+                  <div class="text-xs font-bold bg-gray-200 text-gray-600 rounded-md px-2 py-1 mb-1">
+                    TUE
+                  </div>
+                  <div class="text-sm font-medium">14:00</div>
+                </div>
+                <div>
+                  <div class="text-sm font-medium text-gray-800">React Lab</div>
+                  <div class="text-xs text-gray-500">Components Workshop</div>
+                  <div class="text-xs text-gray-500 mt-1 flex items-center">
+                    <i class="fas fa-user-circle text-gray-400 mr-1"></i> Ms. Lee
+                  </div>
+                </div>
+              </div>
+
+              <!-- Thursday -->
+              <div class="flex p-3 rounded-lg border-l-4 border-gray-300 bg-gray-50">
+                <div class="mr-4 flex flex-col items-center justify-center">
+                  <div class="text-xs font-bold bg-gray-200 text-gray-600 rounded-md px-2 py-1 mb-1">
+                    THU
+                  </div>
+                  <div class="text-sm font-medium">15:30</div>
+                </div>
+                <div>
+                  <div class="text-sm font-medium text-gray-800">Group Project</div>
+                  <div class="text-xs text-gray-500">Team Meeting</div>
+                  <div class="text-xs text-gray-500 mt-1 flex items-center">
+                    <i class="fas fa-users text-gray-400 mr-1"></i> Team Discussion
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Calendar Link -->
+            <button
+              class="mt-4 text-sm text-indigo-600 hover:text-indigo-800 flex items-center justify-center w-full"
+            >
+              View full calendar <i class="fas fa-arrow-right ml-1 text-xs"></i>
+            </button>
+          </section>
+
+          <!-- === Learning Resources === -->
+          <section class="card p-6">
+            <h2 class="text-lg font-bold text-gray-800 mb-4">Learning Resources</h2>
+
+            <div class="space-y-4">
+              <!-- REST API Guide -->
+              <div class="flex items-center">
+                <div class="w-10 h-10 flex items-center justify-center text-blue-600 rounded-lg bg-blue-100 mr-3">
+                  <i class="fas fa-file-alt"></i>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-800">REST API Guide</p>
+                  <button class="text-indigo-600 text-sm hover:text-indigo-800">Open Resource</button>
+                </div>
+              </div>
+
+              <!-- React Hooks Tutorial -->
+              <div class="flex items-center">
+                <div class="w-10 h-10 flex items-center justify-center text-red-600 rounded-lg bg-red-100 mr-3">
+                  <i class="fas fa-video"></i>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-800">React Hooks Tutorial</p>
+                  <button class="text-indigo-600 text-sm hover:text-indigo-800">Watch Video</button>
+                </div>
+              </div>
+
+              <!-- SQL Cheatsheet -->
+              <div class="flex items-center">
+                <div class="w-10 h-10 flex items-center justify-center text-green-600 rounded-lg bg-green-100 mr-3">
+                  <i class="fas fa-database"></i>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-800">SQL Cheatsheet</p>
+                  <button class="text-indigo-600 text-sm hover:text-indigo-800">Download PDF</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- === Notifications === -->
+          <section class="card p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-lg font-bold text-gray-800">Notifications</h2>
+              <span class="bg-red-100 text-red-800 text-xs font-medium px-2 py-1 rounded-full"
+                >3 New</span
+              >
+            </div>
+
+            <!-- List -->
+            <div class="space-y-3">
+              <!-- 1 -->
+              <div class="pb-3 border-b border-gray-100">
+                <p class="font-medium text-gray-800">New session added</p>
+                <p class="text-sm text-gray-500">Database Workshop on May 8th</p>
+                <p class="text-xs text-gray-400 mt-1">Apr 28, 2025</p>
+              </div>
+
+              <!-- 2 -->
+              <div class="py-3 border-b border-gray-100">
+                <p class="font-medium text-gray-800">Assignment graded</p>
+                <p class="text-sm text-gray-500">You received an A on JS Frameworks</p>
+                <p class="text-xs text-gray-400 mt-1">Apr 27, 2025</p>
+              </div>
+
+              <!-- 3 -->
+              <div class="pt-3">
+                <p class="font-medium text-gray-800">System maintenance</p>
+                <p class="text-sm text-gray-500">Scheduled for Apr 29, 11PM-2AM</p>
+                <p class="text-xs text-gray-400 mt-1">Apr 25, 2025</p>
+              </div>
+            </div>
+
+            <button
+              class="w-full mt-4 pt-3 border-t border-gray-100 text-center text-indigo-600 font-medium text-sm hover:text-indigo-800"
+            >
+              View All Notifications
+            </button>
+          </section>
+
+          <!-- === Skills Development === -->
+          <section class="card p-6">
+            <h2 class="text-lg font-bold text-gray-800 mb-4">Skills Development</h2>
+
+            <!-- Circular progress grid -->
+            <div class="grid grid-cols-3 gap-4 mb-4">
+              <!-- Python -->
+              <div class="text-center">
+                <div class="relative mx-auto w-16 h-16 mb-2">
+                  <svg class="w-16 h-16">
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="28"
+                      fill="none"
+                      stroke="#e5e7eb"
+                      stroke-width="4"
+                    ></circle>
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="28"
+                      fill="none"
+                      stroke="#4f46e5"
+                      stroke-width="4"
+                      stroke-dasharray="175.9"
+                      stroke-dashoffset="35.2"
+                      class="progress-ring"
+                    ></circle>
+                  </svg>
+                  <div
+                    class="absolute inset-0 flex items-center justify-center text-sm font-bold text-indigo-600"
+                  >
+                    80%
+                  </div>
+                </div>
+                <div class="text-xs font-medium text-gray-800">Python</div>
+              </div>
+
+              <!-- React -->
+              <div class="text-center">
+                <div class="relative mx-auto w-16 h-16 mb-2">
+                  <svg class="w-16 h-16">
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="28"
+                      fill="none"
+                      stroke="#e5e7eb"
+                      stroke-width="4"
+                    ></circle>
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="28"
+                      fill="none"
+                      stroke="#3b82f6"
+                      stroke-width="4"
+                      stroke-dasharray="175.9"
+                      stroke-dashoffset="70.4"
+                      class="progress-ring"
+                    ></circle>
+                  </svg>
+                  <div
+                    class="absolute inset-0 flex items-center justify-center text-sm font-bold text-blue-600"
+                  >
+                    60%
+                  </div>
+                </div>
+                <div class="text-xs font-medium text-gray-800">React</div>
+              </div>
+
+              <!-- SQL -->
+              <div class="text-center">
+                <div class="relative mx-auto w-16 h-16 mb-2">
+                  <svg class="w-16 h-16">
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="28"
+                      fill="none"
+                      stroke="#e5e7eb"
+                      stroke-width="4"
+                    ></circle>
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="28"
+                      fill="none"
+                      stroke="#10b981"
+                      stroke-width="4"
+                      stroke-dasharray="175.9"
+                      stroke-dashoffset="17.6"
+                      class="progress-ring"
+                    ></circle>
+                  </svg>
+                  <div
+                    class="absolute inset-0 flex items-center justify-center text-sm font-bold text-green-600"
+                  >
+                    90%
+                  </div>
+                </div>
+                <div class="text-xs font-medium text-gray-800">SQL</div>
+              </div>
+            </div>
+
+            <button
+              class="w-full mt-2 pt-3 border-t border-gray-100 text-center text-indigo-600 font-medium text-sm hover:text-indigo-800"
+            >
+              View All Skills
+            </button>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </body>
 </html>

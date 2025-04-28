@@ -27,6 +27,9 @@ export type NavLink = {
     
       // Personal
       { label: "Profile", icon: "people", href: "/student/profile" },
+
+      { label: "Refer and Earn", icon: "card_giftcard", href: "/student/refer" },
+
     ],
     admin: [
       { label: "Dashboard", icon: "dashboard", href: "/admin/dashboard" },

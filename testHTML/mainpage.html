@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <style>
+    .sidebar-transition { transition: all 0.3s ease; }
+    @media (max-width: 768px) {
+      #sidebar { transform: translateX(-100%); position: fixed; z-index: 40; }
+      #sidebar.show { transform: translateX(0); }
+      #main-content { margin-left: 0 !important; width: 100% !important; }
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div class="flex relative" id="wrapper">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar-transition bg-gradient-to-b from-[#2E3192] to-[#0071BC] w-64 h-screen shadow-lg fixed">
+      <div class="p-4">
+        <h2 class="text-white text-2xl font-bold text-center">EduPortal</h2>
+      </div>
+      <nav class="mt-6">
+        <ul class="space-y-2 px-4">
+          <li>
+            <a href="#" class="flex items-center space-x-3 text-white p-3 rounded-lg hover:bg-white/10 bg-white/10">
+              <span class="material-icons">dashboard</span>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center space-x-3 text-white p-3 rounded-lg hover:bg-white/10">
+              <span class="material-icons">school</span>
+              <span>Courses</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center space-x-3 text-white p-3 rounded-lg hover:bg-white/10">
+              <span class="material-icons">assignment</span>
+              <span>Assignments</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center space-x-3 text-white p-3 rounded-lg hover:bg-white/10">
+              <span class="material-icons">schedule</span>
+              <span>Schedule</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="flex items-center space-x-3 text-white p-3 rounded-lg hover:bg-white/10">
+              <span class="material-icons">grade</span>
+              <span>Grades</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+    <!-- Overlay for mobile -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black opacity-50 z-30 hidden" onclick="closeSidebar()"></div>
+    <!-- Main Content -->
+    <div id="main-content" class="flex-1 sidebar-transition md:ml-64 w-full">
+      <!-- Navbar -->
+      <nav class="bg-white shadow-sm w-full">
+        <div class="flex justify-between items-center px-4 md:px-6 py-4">
+          <div class="flex items-center">
+            <button id="toggleSidebar" class="text-[#606060] hover:text-[#2E3192]">
+              <span class="material-icons text-2xl">menu</span>
+            </button>
+            <h1 class="text-xl font-semibold text-[#606060] ml-4">Student Dashboard</h1>
+          </div>
+          <div class="flex items-center">
+            <div class="relative">
+              <button class="flex items-center space-x-2 text-[#606060] hover:text-[#2E3192]">
+                <span class="material-icons">account_circle</span>
+                <span class="hidden md:inline">John Doe</span>
+                <span class="material-icons">expand_more</span>
+              </button>
+              <div class="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg py-2 hidden">
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Profile</a>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Settings</a>
+                <a href="#" class="block px-4 py-2 hover:bg-gray-100">Logout</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+      <!-- Main Content Area -->
+      <main class="p-4 md:p-6">
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6">
+          <div class="bg-[#00A99D] p-4 md:p-6 rounded-lg text-white shadow-lg">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-2xl font-bold">4</p>
+                <p>Current Courses</p>
+              </div>
+              <span class="material-icons text-4xl">book</span>
+            </div>
+          </div>
+          <div class="bg-[#0071BC] p-4 md:p-6 rounded-lg text-white shadow-lg">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-2xl font-bold">3</p>
+                <p>Pending Assignments</p>
+              </div>
+              <span class="material-icons text-4xl">assignment</span>
+            </div>
+          </div>
+          <div class="bg-[#2E3192] p-4 md:p-6 rounded-lg text-white shadow-lg">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-2xl font-bold">89%</p>
+                <p>Overall Grade</p>
+              </div>
+              <span class="material-icons text-4xl">assessment</span>
+            </div>
+          </div>
+          <div class="bg-[#606060] p-4 md:p-6 rounded-lg text-white shadow-lg">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-2xl font-bold">12d</p>
+                <p>Next Exam</p>
+              </div>
+              <span class="material-icons text-4xl">event</span>
+            </div>
+          </div>
+        </div>
+        <!-- Recent Activities -->
+        <div class="bg-white rounded-lg shadow-lg p-4 md:p-6">
+          <h3 class="text-xl font-semibold mb-4 text-[#606060]">Recent Activities</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-[#2E3192] text-white">
+                <tr>
+                  <th class="p-2 md:p-3 text-left">Course</th>
+                  <th class="p-2 md:p-3 text-left">Activity</th>
+                  <th class="p-2 md:p-3 text-left">Deadline</th>
+                  <th class="p-2 md:p-3 text-left">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="p-2 md:p-3">Mathematics</td>
+                  <td class="p-2 md:p-3">Algebra Assignment</td>
+                  <td class="p-2 md:p-3">2023-12-15</td>
+                  <td class="p-2 md:p-3 text-[#00A99D]">Submitted</td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="p-2 md:p-3">Physics</td>
+                  <td class="p-2 md:p-3">Chapter 5 Quiz</td>
+                  <td class="p-2 md:p-3">2023-12-18</td>
+                  <td class="p-2 md:p-3 text-[#0071BC]">Pending</td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                  <td class="p-2 md:p-3">Chemistry</td>
+                  <td class="p-2 md:p-3">Lab Report</td>
+                  <td class="p-2 md:p-3">2023-12-20</td>
+                  <td class="p-2 md:p-3 text-[#606060]">Not Started</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script>
+    const sidebar = document.getElementById('sidebar'),
+          mainContent = document.getElementById('main-content'),
+          toggleButton = document.getElementById('toggleSidebar'),
+          overlay = document.getElementById('sidebar-overlay');
+
+    const toggleSidebar = () => {
+      if (window.innerWidth < 768) {
+        sidebar.classList.toggle('show');
+        overlay.classList.toggle('hidden');
+      } else {
+        sidebar.classList.toggle('-translate-x-full');
+        mainContent.classList.toggle('md:ml-64');
+        mainContent.classList.toggle('md:ml-0');
+      }
+    };
+
+    const closeSidebar = () => {
+      sidebar.classList.remove('show');
+      overlay.classList.add('hidden');
+    };
+
+    toggleButton.addEventListener('click', toggleSidebar);
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768) {
+        sidebar.classList.remove('show');
+        overlay.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

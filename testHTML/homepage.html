@@ -2,188 +2,483 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <title>HappyDonates - Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Data I/O & Preprocessing</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <style>
-    :root {
-      --main-bg-color: #9d0069;
-      --main-text-color: #ffffff;
-      --second-text-color: #bbbdc5;
-      --second-bg-color: #edc1ef;
-      --sidebar-bg-color: linear-gradient(135deg, #ff99cc, #ffccff);
-      --sidebar-shadow-color: rgba(0, 0, 0, 0.2);
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    body { 
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
     }
-    body {
-      background-color: white;
+    .gradient-text {
+      background: linear-gradient(45deg, #1e40af, #3b82f6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
-    /* Custom styles for card counters remain similar */
-    .card-counter {
-      box-shadow: 2px 2px 10px #DADADA;
-      margin: 5px;
-      padding: 20px 10px;
-      background-color: #fff;
-      height: 100px;
-      border-radius: 5px;
-      transition: .3s linear all;
-      position: relative;
+    .hero-gradient {
+      background: linear-gradient(135deg, #f1f5f9 0%, #dbeafe 100%);
     }
-    .card-counter:hover {
-      box-shadow: 4px 4px 20px #DADADA;
-      transition: .3s linear all;
+    .dot-pattern {
+      background-image: radial-gradient(#93c5fd33 1px, transparent 1px);
+      background-size: 40px 40px;
     }
   </style>
 </head>
-<body class="bg-white">
-  <div class="flex" id="wrapper">
-    <!-- Sidebar -->
-    <div id="sidebar-wrapper" class="fixed min-h-screen w-64 -ml-64 transition-all duration-300" style="background: var(--sidebar-bg-color); box-shadow: 2px 0 10px var(--sidebar-shadow-color); color: var(--main-text-color);">
-      <div class="text-center py-4 text-xl font-bold uppercase border-b" style="color: var(--main-bg-color);">
-        HappyDonates
-      </div>
-      <div class="flex flex-col my-3">
-        <a href="{% url 'admin_home' %}" class="py-5 px-8 hover:bg-white hover:bg-opacity-10 transition-colors" style="color: var(--main-bg-color);">
-          <span class="material-icons mr-2">dashboard</span>Dashboard
-        </a>
-        <a href="{% url 'admin_user' %}" class="py-5 px-8 hover:bg-white hover:bg-opacity-10 transition-colors" style="color: var(--main-bg-color);">
-          <span class="material-icons mr-2">person</span>Users
-        </a>
-        <a href="{% url 'admin_post' %}" class="py-5 px-8 hover:bg-white hover:bg-opacity-10 transition-colors" style="color: var(--main-bg-color);">
-          <span class="material-icons mr-2">favorite</span>Post
-        </a>
-        <a href="{% url 'admin_donation_request' %}" class="py-5 px-8 hover:bg-white hover:bg-opacity-10 transition-colors" style="color: var(--main-bg-color);">
-          <span class="material-icons mr-2">volunteer_activism</span>Donations
-        </a>
-        <a href="{% url 'admin_category' %}" class="py-5 px-8 hover:bg-white hover:bg-opacity-10 transition-colors" style="color: var(--main-bg-color);">
-          <span class="material-icons mr-2">category</span>Categories
-        </a>
-        <a href="{% url 'admin_location' %}" class="py-5 px-8 hover:bg-white hover:bg-opacity-10 transition-colors" style="color: var(--main-bg-color);">
-          <span class="material-icons mr-2">location_on</span>Locations
-        </a>
-        <a href="{% url 'poster_list' %}" class="py-5 px-8 hover:bg-white hover:bg-opacity-10 transition-colors" style="color: var(--main-bg-color);">
-          <span class="material-icons mr-2">library_books</span>Add Ads
-        </a>
+<body class="bg-slate-50">
+  <!-- Navigation -->
+  <nav class="bg-white shadow-sm border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 flex items-center">
+            <svg class="h-8 w-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span class="ml-2 text-xl font-bold text-slate-900">DataSkill</span>
+          </div>
+        </div>
+        <div class="hidden md:flex md:items-center md:space-x-6">
+          <a href="#" class="text-slate-700 hover:text-blue-600 text-sm font-medium">Courses</a>
+          <a href="#" class="text-slate-700 hover:text-blue-600 text-sm font-medium">About</a>
+          <a href="#" class="text-slate-700 hover:text-blue-600 text-sm font-medium">Pricing</a>
+          <a href="#" class="text-slate-700 hover:text-blue-600 text-sm font-medium">Contact</a>
+          <a href="#" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-white text-sm font-medium">Log In</a>
+        </div>
+        <div class="flex items-center md:hidden">
+          <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-slate-700 hover:text-blue-600 focus:outline-none">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
-    <!-- /#sidebar-wrapper -->
+  </nav>
 
-    <!-- Page Content -->
-    <div id="page-content-wrapper" class="w-full transition-all duration-300">
-      <nav class="flex items-center justify-between py-4 px-4 bg-transparent">
-        <div class="flex items-center">
-          <i class="fas fa-align-left text-xl mr-3" id="menu-toggle" style="color: var(--main-bg-color); cursor: pointer;"></i>
-          <h2 class="text-2xl m-0">Dashboard</h2>
-        </div>
-        <div class="relative">
-          <button id="dropdownToggle" class="flex items-center text-sm font-bold" onclick="toggleDropdown()">
-            <i class="fas fa-user mr-2"></i>Admin
-          </button>
-          <div id="dropdownMenu" class="absolute right-0 mt-2 w-48 bg-white rounded shadow-md hidden">
-            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Profile</a>
-            <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Settings</a>
-            <a href="{% url 'admin_logout' %}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Logout</a>
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden hero-gradient">
+    <div class="absolute inset-0 dot-pattern"></div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:flex lg:items-center lg:gap-12">
+      <!-- Content -->
+      <div class="lg:w-1/2">
+        <span class="inline-block mb-4 px-3 py-1 text-sm font-medium text-blue-800 bg-blue-100 rounded-full">
+          Professional Certificate
+        </span>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 leading-tight mb-4">
+          <span class="gradient-text">Data I/O</span> and<br>Preprocessing
+        </h1>
+        <p class="text-lg text-slate-700 mb-6 max-w-2xl">
+          Master data manipulation with Python & SQL for efficient data handling.
+        </p>
+        
+        <div class="flex items-center gap-4 mb-6">
+          <div class="flex -space-x-2">
+            <img src="/api/placeholder/40/40" alt="Student 1" class="w-10 h-10 rounded-full border-2 border-white">
+            <img src="/api/placeholder/40/40" alt="Student 2" class="w-10 h-10 rounded-full border-2 border-white">
+            <img src="/api/placeholder/40/40" alt="Student 3" class="w-10 h-10 rounded-full border-2 border-white">
           </div>
-        </div>
-      </nav>
-
-      <div class="container mx-auto px-4">
-        <div class="flex flex-wrap gap-3 my-2">
-          <div class="w-full md:w-1/3">
-            <div class="card-counter" style="background-color: var(--main-bg-color); color: #FFF;">
-              <i class="material-icons" style="font-size: 5em; opacity: 0.2; position: absolute; top: 15px; right: 15px;">people</i>
-              <span class="block text-3xl">{{user_count}}</span>
-              <span class="italic opacity-50 text-lg">Active Users</span>
-            </div>
-          </div>
-          <div class="w-full md:w-1/3">
-            <div class="card-counter" style="background-color: #66bb6a; color: #FFF;">
-              <i class="material-icons" style="font-size: 5em; opacity: 0.2; position: absolute; top: 15px; right: 15px;">favorite</i>
-              <span class="block text-3xl">{{post_count}}</span>
-              <span class="italic opacity-50 text-lg">Active Posts</span>
-            </div>
-          </div>
-          <div class="w-full md:w-1/3">
-            <div class="card-counter" style="background-color: #26c6da; color: #FFF;">
-              <i class="material-icons" style="font-size: 5em; opacity: 0.2; position: absolute; top: 15px; right: 15px;">volunteer_activism</i>
-              <span class="block text-3xl">{{donation_count}}</span>
-              <span class="italic opacity-50 text-lg">Donations</span>
+          <div class="text-slate-700">
+            <p class="text-sm font-medium">Join 25k+ students</p>
+            <div class="flex items-center gap-1 text-sm">
+              <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+              </svg>
+              <span>4.8 (2.5k reviews)</span>
             </div>
           </div>
         </div>
 
-        <!-- Chart section removed -->
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="#"
+             class="inline-flex items-center justify-center px-6 py-3 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-all shadow-lg hover:shadow-xl">
+            Enroll Now — Free
+          </a>
+          <a href="#"
+             class="inline-flex items-center justify-center px-6 py-3 text-base font-semibold text-slate-900 bg-white hover:bg-slate-50 rounded-lg transition-all shadow hover:shadow-md border border-slate-200">
+            Watch Preview
+          </a>
+        </div>
+      </div>
 
-        <div class="my-5">
-          <h3 class="text-xl mb-3">Recent Donation Requests</h3>
-          <div class="overflow-x-auto">
-            <table class="min-w-full bg-white rounded shadow-sm">
-              <thead>
-                <tr class="bg-[var(--main-bg-color)] text-white">
-                  <th class="px-4 py-2 w-12">#</th>
-                  <th class="px-4 py-2">Title</th>
-                  <th class="px-4 py-2">User name</th>
-                  <th class="px-4 py-2">Location</th>
-                  <th class="px-4 py-2">Last date</th>
-                  <th class="px-4 py-2">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-200">
-                {% for data in donation_request %}
-                <tr class="hover:bg-gray-100">
-                  <td class="px-4 py-2 text-center">{{forloop.counter}}</td>
-                  <td class="px-4 py-2">{{data.title}}</td>
-                  <td class="px-4 py-2">{{data.user.username}}</td>
-                  <td class="px-4 py-2">{{data.location.district_name}}</td>
-                  <td class="px-4 py-2">{{data.end_date}}</td>
-                  <td class="px-4 py-2">
-                    <a href="{% url 'admin_donation_detail' data.donation_id %}" class="bg-blue-500 text-white px-2 py-1 text-sm rounded">View More</a>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+      <!-- Preview Card -->
+      <div class="hidden lg:block lg:w-1/2 mt-10 lg:mt-0">
+        <div class="relative bg-white rounded-2xl shadow-xl p-5 border border-slate-200 transform rotate-1">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="w-3 h-3 rounded-full bg-red-500"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+            <span class="w-3 h-3 rounded-full bg-green-500"></span>
+          </div>
+          
+          <!-- Course features section -->
+          <div class="space-y-3 mb-5">
+            <h3 class="text-lg font-semibold text-slate-900">What You'll Learn</h3>
+            
+            <div class="flex items-start gap-3">
+              <div class="p-2 bg-blue-50 rounded-lg flex-shrink-0">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <p class="text-slate-700">Industry-standard data processing techniques</p>
+            </div>
+            
+            <div class="flex items-start gap-3">
+              <div class="p-2 bg-blue-50 rounded-lg flex-shrink-0">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <p class="text-slate-700">Advanced SQL for data manipulation</p>
+            </div>
+            
+            <div class="flex items-start gap-3">
+              <div class="p-2 bg-blue-50 rounded-lg flex-shrink-0">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <p class="text-slate-700">Effective data visualization strategies</p>
+            </div>
+          </div>
+          
+          <!-- Tag -->
+          <div class="absolute bottom-0 right-0 -mb-6 -mr-6 bg-blue-700 text-white px-4 py-2 rounded-xl shadow-lg">
+            Self-paced
           </div>
         </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- Stats Section -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-slate-50">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
+        <div class="flex items-center gap-4">
+          <div class="p-3 bg-blue-50 rounded-lg">
+            <svg class="w-6 h-6 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-slate-900">31 Hours</h3>
+            <p class="text-slate-600">Interactive Content</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
+        <div class="flex items-center gap-4">
+          <div class="p-3 bg-blue-50 rounded-lg">
+            <svg class="w-6 h-6 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-slate-900">5 Modules</h3>
+            <p class="text-slate-600">Hands-on Projects</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
+        <div class="flex items-center gap-4">
+          <div class="p-3 bg-blue-50 rounded-lg">
+            <svg class="w-6 h-6 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-slate-900">Certificate</h3>
+            <p class="text-slate-600">Upon Completion</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Course Modules Section -->
+<section id="course-modules" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="text-center mb-8">
+    <h2 class="text-3xl font-bold text-slate-900">Course Modules</h2>
+    <p class="mt-3 text-lg text-slate-600 max-w-3xl mx-auto">
+      Comprehensive curriculum to master data preprocessing
+    </p>
+  </div>
+
+  <div class="space-y-4">
+    <!-- Module 1 -->
+    <details class="group border border-slate-100 rounded-xl bg-white">
+      <summary class="flex items-center justify-between p-4 cursor-pointer">
+        <div class="flex items-center gap-3">
+          <div class="h-8 w-8 bg-blue-100 rounded-lg flex items-center justify-center">
+            <span class="text-lg font-bold text-blue-700">1</span>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-900">Fundamentals of Data I/O</h3>
+        </div>
+        <svg class="w-5 h-5 text-slate-500 transform transition-transform duration-200 group-open:rotate-180"
+             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 9l-7 7-7-7" />
+        </svg>
+      </summary>
+      <div class="px-5 pb-5 text-slate-600 space-y-2">
+        <p>Import and export data from various sources including CSV, JSON, Excel, and SQL databases.</p>
+        <ul class="space-y-1">
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M5 13l4 4L19 7" />
+            </svg>
+            Reading and writing data files
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M5 13l4 4L19 7" />
+            </svg>
+            Database connections and queries
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M5 13l4 4L19 7" />
+            </svg>
+            Web scraping and API integration
+          </li>
+        </ul>
+      </div>
+    </details>
+
+    <!-- Module 2 -->
+    <details class="group border border-slate-100 rounded-xl bg-white">
+      <summary class="flex items-center justify-between p-4 cursor-pointer">
+        <div class="flex items-center gap-3">
+          <div class="h-8 w-8 bg-green-100 rounded-lg flex items-center justify-center">
+            <span class="text-lg font-bold text-green-700">2</span>
+          </div>
+          <h3 class="text-lg font-semibold text-slate-900">Data Cleaning & Transformation</h3>
+        </div>
+        <svg class="w-5 h-5 text-slate-500 transform transition-transform duration-200 group-open:rotate-180"
+             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 9l-7 7-7-7" />
+        </svg>
+      </summary>
+      <div class="px-5 pb-5 text-slate-600 space-y-2">
+        <p>Clean messy data and transform it into formats suitable for analysis.</p>
+        <ul class="space-y-1">
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M5 13l4 4L19 7" />
+            </svg>
+            Handling missing values and outliers
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M5 13l4 4L19 7" />
+            </svg>
+            Data normalization and scaling
+          </li>
+          <li class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M5 13l4 4L19 7" />
+            </svg>
+            Feature engineering and extraction
+          </li>
+        </ul>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- Simple & Standard Certificate Details Section -->
+<section id="certificate-details" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <h2 class="text-2xl font-bold text-slate-900 mb-4">Certificate Details</h2>
+  <p class="text-slate-600 mb-8">
+    Upon successful completion, you’ll receive:
+  </p>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Verifiable Certificate -->
+    <div class="flex items-start space-x-4 p-4 border rounded-lg">
+      <svg class="w-6 h-6 text-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 8v4l3 3M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <div>
+        <h3 class="text-lg font-semibold text-slate-900">Verifiable Certificate</h3>
+        <p class="text-slate-600 text-sm">
+          Downloadable PDF you can validate online.
+        </p>
+      </div>
+    </div>
+
+    <!-- Digital Badge -->
+    <div class="flex items-start space-x-4 p-4 border rounded-lg">
+      <svg class="w-6 h-6 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M5 13l4 4L19 7"/>
+      </svg>
+      <div>
+        <h3 class="text-lg font-semibold text-slate-900">Digital Badge</h3>
+        <p class="text-slate-600 text-sm">
+          Earn a badge for social media and resumes.
+        </p>
+      </div>
+    </div>
+
+    <!-- Industry Accreditation -->
+    <div class="flex items-start space-x-4 p-4 border rounded-lg">
+      <svg class="w-6 h-6 text-yellow-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 12h6m-6 4h6M12 20a8 8 0 100-16 8 8 0 000 16z"/>
+      </svg>
+      <div>
+        <h3 class="text-lg font-semibold text-slate-900">Industry Accreditation</h3>
+        <p class="text-slate-600 text-sm">
+          Recognized by top data organizations.
+        </p>
       </div>
     </div>
   </div>
+</section>
 
-  <script>
-    // Sidebar toggle functionality
-    var wrapper = document.getElementById("wrapper");
-    var toggleButton = document.getElementById("menu-toggle");
-    toggleButton.onclick = function() {
-      wrapper.classList.toggle("toggled");
-      var sidebar = document.getElementById("sidebar-wrapper");
-      var pageContent = document.getElementById("page-content-wrapper");
-      if (wrapper.classList.contains("toggled")) {
-        sidebar.style.marginLeft = "0";
-        pageContent.style.marginLeft = "16rem"; /* 16rem equals Tailwind's w-64 */
-      } else {
-        sidebar.style.marginLeft = "-16rem";
-        pageContent.style.marginLeft = "0";
-      }
-    };
+  <!-- Outcomes Section -->
+  <section class="bg-blue-700 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-white/10 backdrop-blur p-5 rounded-xl border border-blue-600">
+          <div class="h-10 w-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-white mb-2">Process Data Efficiently</h3>
+          <p class="text-blue-100">
+            Design scalable data processing pipelines for real-world data.
+          </p>
+        </div>
+        
+        <div class="bg-white/10 backdrop-blur p-5 rounded-xl border border-blue-600">
+          <div class="h-10 w-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-white mb-2">Master SQL</h3>
+          <p class="text-blue-100">
+            Write complex SQL queries to extract and analyze relational data.
+          </p>
+        </div>
+        
+        <div class="bg-white/10 backdrop-blur p-5 rounded-xl border border-blue-600">
+          <div class="h-10 w-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
+            <svg class="w-5 h-5 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-white mb-2">Visualization Skills</h3>
+          <p class="text-blue-100">
+            Create meaningful data visualizations for effective analysis.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    // Dropdown toggle functionality
-    function toggleDropdown() {
-      var dropdown = document.getElementById('dropdownMenu');
-      dropdown.classList.toggle('hidden');
-    }
+<!-- Testimonials Section -->
+  <!-- Testimonials Section -->
+  <section id="testimonials" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-slate-50">
+    <div class="text-center mb-8">
+      <h2 class="text-3xl font-bold text-slate-900">What Our Students Say</h2>
+      <p class="mt-3 text-lg text-slate-600 max-w-2xl mx-auto">
+        Hear from learners who've transformed their careers with DataSkill.
+      </p>
+    </div>
 
-    // Close dropdown if clicking outside
-    document.addEventListener('click', function(event) {
-      var dropdown = document.getElementById('dropdownMenu');
-      var toggle = document.getElementById('dropdownToggle');
-      if (!toggle.contains(event.target) && !dropdown.contains(event.target)) {
-        dropdown.classList.add('hidden');
-      }
-    });
-  </script>
+    <div class="grid gap-6 md:grid-cols-3">
+      <!-- Testimonial 1 -->
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
+        <div class="flex items-center mb-3">
+          <img src="/api/placeholder/60/60" alt="Priya Nair" class="w-10 h-10 rounded-full border-2 border-blue-100">
+          <div class="ml-3">
+            <p class="text-slate-900 font-semibold">Priya Nair</p>
+            <p class="text-sm text-slate-500">Data Analyst</p>
+          </div>
+        </div>
+        <p class="text-slate-700 mb-3">
+          "The Data I/O & Preprocessing course was a game-changer. The hands-on projects made complex concepts clear."
+        </p>
+        <div class="flex items-center space-x-1">
+          <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921..."/></svg>
+          <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921..."/></svg>
+          <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921..."/></svg>
+          <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921..."/></svg>
+          <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921..."/></svg>
+        </div>
+      </div>
+
+      <!-- Testimonial 2 -->
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
+        <div class="flex items-center mb-3">
+          <img src="/api/placeholder/60/60" alt="Arjun Patel" class="w-10 h-10 rounded-full border-2 border-green-100">
+          <div class="ml-3">
+            <p class="text-slate-900 font-semibold">Arjun Patel</p>
+            <p class="text-sm text-slate-500">Business Analyst</p>
+          </div>
+        </div>
+        <p class="text-slate-700 mb-3">
+          "I loved the balance of theory and practice. The SQL deep-dive and capstone project were exactly what I needed."
+        </p>
+        <div class="flex items-center space-x-1">
+          <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921..."/></svg>
+          <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921..."/></svg>
+          <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921..."/></svg>
+          <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921..."/></svg>
+          <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921..."/></svg>
+        </div>
+      </div>
+
+      <!-- Testimonial 3 -->
+      <div class="bg-white p-5 rounded-xl shadow-sm border border-slate-100">
+        <div class="flex items-center mb-3">
+          <img src="/api/placeholder/60/60" alt="Meera Singh" class="w-10 h-10 rounded-full border-2 border-purple-100">
+          <div class="ml-3">
+            <p class="text-slate-900 font-semibold">Meera Singh</p>
+            <p class="text-sm text-slate-500">Research Scientist</p>
+          </div>
+        </div>
+        <p class="text-slate-700 mb-3">
+          "The instructors were top-notch and the real-world examples made every lesson stick. Highly recommend!"
+        </p>
+        <div class="flex items-center space-x-1">
+          <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921..."/></svg>
+          <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921..."/></svg>
+          <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921..."/></svg>
+          <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921..."/></svg>
+          <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921..."/></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+      <div class="text-slate-700 text-sm">&copy; 2025 DataSkill. All rights reserved.</div>
+      <div class="flex space-x-6 mt-4 md:mt-0">
+        <a href="#" class="text-slate-600 hover:text-blue-600 text-sm">Privacy Policy</a>
+        <a href="#" class="text-slate-600 hover:text-blue-600 text-sm">Terms of Service</a>
+        <a href="#" class="text-slate-600 hover:text-blue-600 text-sm">Contact Us</a>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

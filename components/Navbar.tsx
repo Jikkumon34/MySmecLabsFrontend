@@ -26,7 +26,7 @@ const Navbar: FC = () => {
 
         {/* Menu & CTA */}
         <div className="hidden md:flex space-x-8 items-center">
-          <Link href="#courses" className="text-gray-600 hover:text-[#00A99D] transition">
+          <Link href="/courses" className="text-gray-600 hover:text-[#00A99D] transition">
             Courses
           </Link>
           <Link href="#paths" className="text-gray-600 hover:text-[#00A99D] transition">

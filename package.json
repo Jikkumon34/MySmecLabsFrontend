@@ -28,7 +28,8 @@
     "prismjs": "^1.30.0",
     "react": "^19.1.0",
     "react-big-calendar": "^1.18.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "recharts": "^2.15.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",

@@ -159,3 +159,23 @@ footer {
 .sidebar-transition {
   transition: all 0.3s ease;
 }
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.gradient-text {
+  background: linear-gradient(45deg, #1e40af, #3b82f6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-gradient {
+  background: linear-gradient(135deg, #f1f5f9 0%, #dbeafe 100%);
+}
+
+.dot-pattern {
+  background-image: radial-gradient(#93c5fd33 1px, transparent 1px);
+  background-size: 40px 40px;
+}

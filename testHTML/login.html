@@ -1,101 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SmecLabs - Login</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Module Accordion</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    .accordion-content.active {
+      max-height: 1000px;
+    }
+  </style>
 </head>
-<body class="min-h-screen bg-gray-50">
-  <!-- Navbar -->
-  <nav class="bg-white border-b border-gray-100 py-4 fixed w-full top-0 z-50">
-    <div class="container mx-auto px-6 flex justify-between items-center">
-      <div class="text-2xl font-bold">
-        <span class="bg-gradient-to-br from-[#2E3192] to-[#00A99D] bg-clip-text text-transparent">
-          My SmecLabs
-        </span>
+<body class="bg-gray-100 min-h-screen p-4 md:p-8">
+  <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6">
+    <h1 class="text-3xl font-bold text-center mb-8 text-blue-800">Course Curriculum</h1>
+    
+    <!-- Main Course -->
+    <div class="border border-gray-200 rounded-lg mb-6">
+      <div class="bg-blue-700 text-white p-4 rounded-t-lg flex justify-between items-center cursor-pointer accordion-header" data-target="main-course-1">
+        <h2 class="text-xl font-bold">Web Development Fundamentals</h2>
+        <svg class="w-6 h-6 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
       </div>
-      <div class="hidden md:flex space-x-8 items-center">
-        <a href="#" class="text-gray-600 hover:text-[#00A99D] transition">
-          Courses
-        </a>
-        <a href="#" class="text-gray-600 hover:text-[#00A99D] transition">
-          Paths
-        </a>
-        <a href="#" class="text-gray-600 hover:text-[#00A99D] transition">
-          Resources
-        </a>
-        <button class="bg-[#0071BC] hover:bg-[#00A99D] text-white px-6 py-2 rounded-full ml-4 transition-all duration-300 hover:-translate-y-0.5">
-          Get Started
-        </button>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Main Content Area -->
-  <div class="pt-24 flex min-h-screen">
-    <!-- Left Side Content -->
-    <div class="hidden lg:flex lg:w-1/2  items-center justify-center">
-      <!-- Replace this with your desired left side content -->
-      <div class="p-12">
-        <h2 class="text-4xl font-bold text-[#2E3192] mb-4">Welcome to SmecLabs</h2>
-        <p class="text-[#606060] text-lg">
-          Discover a wide range of courses, paths, and resources tailored to help you succeed.
-          Enhance your skills and join our community of passionate learners.
-        </p>
-      </div>
-    </div>
-
-    <!-- Right Side: Login Form -->
-    <div class="flex w-full lg:w-1/2 items-center justify-center px-4">
-      <div class="p-8 rounded-lg shadow-2xl w-full max-w-md">
-        <!-- Header Section -->
-        <div class="text-center mb-8">
-          <h1 class="text-3xl font-bold text-[#2E3192] mb-2">Welcome Back</h1>
-          <p class="text-[#606060]">Please sign in to continue</p>
-        </div>
-
-        <!-- Login Form -->
-        <form class="space-y-6">
-          <!-- Email Input -->
-          <div>
-            <label class="block text-[#606060] text-sm font-semibold mb-2">Email</label>
-            <input type="email" 
-              class="w-full px-4 py-2 border border-[#606060] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00A99D] focus:border-transparent transition-colors" />
+      
+      <div class="accordion-content p-4" id="main-course-1">
+        <!-- Module Course 1 -->
+        <div class="border border-gray-200 rounded-lg mb-4">
+          <div class="bg-blue-500 text-white p-3 rounded-t-lg flex justify-between items-center cursor-pointer accordion-header" data-target="module-1">
+            <h3 class="text-lg font-semibold">Module 1: HTML Basics</h3>
+            <svg class="w-5 h-5 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
           </div>
-
-          <!-- Password Input -->
-          <div>
-            <label class="block text-[#606060] text-sm font-semibold mb-2">Password</label>
-            <input type="password" 
-              class="w-full px-4 py-2 border border-[#606060] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00A99D] focus:border-transparent transition-colors" />
-          </div>
-
-          <!-- Remember Me & Forgot Password -->
-          <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <input type="checkbox" class="h-4 w-4 text-[#0071BC] focus:ring-[#0071BC]" />
-              <label class="ml-2 text-sm text-[#606060]">Remember me</label>
+          
+          <div class="accordion-content bg-white" id="module-1">
+            <!-- Sub Course Unit 1 -->
+            <div class="border-t border-gray-200">
+              <div class="bg-blue-100 p-3 flex justify-between items-center cursor-pointer accordion-header" data-target="unit-1-1">
+                <h4 class="text-md font-medium text-blue-800">Unit 1: Introduction to HTML</h4>
+                <svg class="w-4 h-4 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+              
+              <div class="accordion-content" id="unit-1-1">
+                <ul class="list-disc ml-8 p-3 space-y-2 text-gray-700">
+                  <li>Topic 1: What is HTML?</li>
+                  <li>Topic 2: Basic HTML Document Structure</li>
+                  <li>Topic 3: HTML Elements and Tags</li>
+                  <li>Topic 4: HTML Attributes</li>
+                </ul>
+              </div>
             </div>
-            <a href="#" class="text-sm text-[#00A99D] hover:text-[#0071BC]">Forgot password?</a>
+            
+            <!-- Sub Course Unit 2 -->
+            <div class="border-t border-gray-200">
+              <div class="bg-blue-100 p-3 flex justify-between items-center cursor-pointer accordion-header" data-target="unit-1-2">
+                <h4 class="text-md font-medium text-blue-800">Unit 2: HTML Text Elements</h4>
+                <svg class="w-4 h-4 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+              
+              <div class="accordion-content" id="unit-1-2">
+                <ul class="list-disc ml-8 p-3 space-y-2 text-gray-700">
+                  <li>Topic 1: Headings and Paragraphs</li>
+                  <li>Topic 2: Text Formatting</li>
+                  <li>Topic 3: Lists in HTML</li>
+                  <li>Topic 4: Links and Anchors</li>
+                </ul>
+              </div>
+            </div>
           </div>
-
-          <!-- Login Button -->
-          <button type="submit" 
-            class="w-full bg-[#00A99D] text-white py-2 rounded-lg hover:bg-[#0071BC] transition-colors font-semibold">
-            Sign In
-          </button>
-        </form>
-
-        <!-- Sign Up Link -->
-        <div class="mt-6 text-center">
-          <p class="text-[#606060]">
-            Don't have an account? 
-            <a href="#" class="text-[#0071BC] hover:text-[#2E3192] font-semibold">Sign up</a>
-          </p>
+        </div>
+        
+        <!-- Module Course 2 -->
+        <div class="border border-gray-200 rounded-lg mb-4">
+          <div class="bg-blue-500 text-white p-3 rounded-t-lg flex justify-between items-center cursor-pointer accordion-header" data-target="module-2">
+            <h3 class="text-lg font-semibold">Module 2: CSS Fundamentals</h3>
+            <svg class="w-5 h-5 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </div>
+          
+          <div class="accordion-content bg-white" id="module-2">
+            <!-- Sub Course Unit 1 -->
+            <div class="border-t border-gray-200">
+              <div class="bg-blue-100 p-3 flex justify-between items-center cursor-pointer accordion-header" data-target="unit-2-1">
+                <h4 class="text-md font-medium text-blue-800">Unit 1: Introduction to CSS</h4>
+                <svg class="w-4 h-4 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+              
+              <div class="accordion-content" id="unit-2-1">
+                <ul class="list-disc ml-8 p-3 space-y-2 text-gray-700">
+                  <li>Topic 1: What is CSS?</li>
+                  <li>Topic 2: CSS Syntax</li>
+                  <li>Topic 3: Selectors and Properties</li>
+                  <li>Topic 4: Inline, Internal, and External CSS</li>
+                </ul>
+              </div>
+            </div>
+            
+            <!-- Sub Course Unit 2 -->
+            <div class="border-t border-gray-200">
+              <div class="bg-blue-100 p-3 flex justify-between items-center cursor-pointer accordion-header" data-target="unit-2-2">
+                <h4 class="text-md font-medium text-blue-800">Unit 2: CSS Box Model</h4>
+                <svg class="w-4 h-4 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+              
+              <div class="accordion-content" id="unit-2-2">
+                <ul class="list-disc ml-8 p-3 space-y-2 text-gray-700">
+                  <li>Topic 1: Margin and Padding</li>
+                  <li>Topic 2: Border and Outline</li>
+                  <li>Topic 3: Width and Height</li>
+                  <li>Topic 4: Box-sizing Property</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main Course 2 -->
+    <div class="border border-gray-200 rounded-lg">
+      <div class="bg-blue-700 text-white p-4 rounded-t-lg flex justify-between items-center cursor-pointer accordion-header" data-target="main-course-2">
+        <h2 class="text-xl font-bold">JavaScript Programming</h2>
+        <svg class="w-6 h-6 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </div>
+      
+      <div class="accordion-content p-4" id="main-course-2">
+        <!-- Module Course 1 -->
+        <div class="border border-gray-200 rounded-lg mb-4">
+          <div class="bg-blue-500 text-white p-3 rounded-t-lg flex justify-between items-center cursor-pointer accordion-header" data-target="module-3">
+            <h3 class="text-lg font-semibold">Module 1: JavaScript Basics</h3>
+            <svg class="w-5 h-5 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </div>
+          
+          <div class="accordion-content bg-white" id="module-3">
+            <!-- Sub Course Unit 1 -->
+            <div class="border-t border-gray-200">
+              <div class="bg-blue-100 p-3 flex justify-between items-center cursor-pointer accordion-header" data-target="unit-3-1">
+                <h4 class="text-md font-medium text-blue-800">Unit 1: JavaScript Introduction</h4>
+                <svg class="w-4 h-4 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+              
+              <div class="accordion-content" id="unit-3-1">
+                <ul class="list-disc ml-8 p-3 space-y-2 text-gray-700">
+                  <li>Topic 1: What is JavaScript?</li>
+                  <li>Topic 2: JavaScript in Web Development</li>
+                  <li>Topic 3: Variables and Data Types</li>
+                  <li>Topic 4: Operators and Expressions</li>
+                </ul>
+              </div>
+            </div>
+            
+            <!-- Sub Course Unit 2 -->
+            <div class="border-t border-gray-200">
+              <div class="bg-blue-100 p-3 flex justify-between items-center cursor-pointer accordion-header" data-target="unit-3-2">
+                <h4 class="text-md font-medium text-blue-800">Unit 2: Control Flow</h4>
+                <svg class="w-4 h-4 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </div>
+              
+              <div class="accordion-content" id="unit-3-2">
+                <ul class="list-disc ml-8 p-3 space-y-2 text-gray-700">
+                  <li>Topic 1: Conditional Statements</li>
+                  <li>Topic 2: Switch Statements</li>
+                  <li>Topic 3: Loops (for, while, do-while)</li>
+                  <li>Topic 4: Break and Continue</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const accordionHeaders = document.querySelectorAll('.accordion-header');
+      
+      accordionHeaders.forEach(header => {
+        header.addEventListener('click', function() {
+          const targetId = this.getAttribute('data-target');
+          const content = document.getElementById(targetId);
+          
+          // Toggle content
+          content.classList.toggle('active');
+          
+          // Toggle arrow
+          const arrow = this.querySelector('svg');
+          arrow.classList.toggle('rotate-180');
+          
+          // Close other accordions at the same level
+          const parent = content.parentElement;
+          const siblings = parent.querySelectorAll('.accordion-content');
+          
+          siblings.forEach(sibling => {
+            if (sibling.id !== targetId && sibling.classList.contains('active')) {
+              sibling.classList.remove('active');
+              
+              // Find and reset the corresponding arrow
+              const siblingHeader = parent.querySelector(`[data-target="${sibling.id}"]`);
+              if (siblingHeader) {
+                const siblingArrow = siblingHeader.querySelector('svg');
+                siblingArrow.classList.remove('rotate-180');
+              }
+            }
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>

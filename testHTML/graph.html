@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+    }
+    .glass-card {
+      backdrop-filter: blur(16px) saturate(180%);
+      background-color: rgba(255, 255, 255, 0.75);
+      border-radius: 12px;
+      border: 1px solid rgba(209, 213, 219, 0.3);
+    }
+    .progress-ring {
+      transform: rotate(-90deg);
+      transform-origin: 50% 50%;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans overflow-x-hidden">
+  <!-- Navigation -->
+  <nav class="bg-white text-gray-800 shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center">
+          <span class="text-xl font-bold text-indigo-600">EduPortal</span>
+        </div>
+        <div class="flex items-center space-x-4">
+          <div class="relative">
+            <button class="text-gray-500 hover:text-gray-700 focus:outline-none">
+              <i class="fas fa-bell text-lg"></i>
+              <span class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">3</span>
+            </button>
+          </div>
+          <div class="flex items-center space-x-2">
+            <div class="h-8 w-8 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold">JS</div>
+            <span>John Smith</span>
+            <i class="fas fa-chevron-down text-xs"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-800">Student Dashboard</h1>
+        <p class="text-gray-500 text-sm">Welcome back, John! Here's your learning progress.</p>
+      </div>
+      <div class="flex space-x-2">
+        <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-sm hover:shadow">
+          Request Help
+        </button>
+        <button class="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border border-gray-200 shadow-sm hover:shadow">
+          <i class="fas fa-cog mr-1"></i> Settings
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Grid Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Left Column - Main Content -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- At-a-Glance Metrics -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100 hover:shadow-md transition-all duration-200">
+            <div class="text-sm text-gray-500 mb-1">Active Courses</div>
+            <div class="text-2xl font-bold text-gray-800">4</div>
+            <div class="text-xs text-green-500 mt-1">
+              <i class="fas fa-arrow-up mr-1"></i> 1 more than last semester
+            </div>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100 hover:shadow-md transition-all duration-200">
+            <div class="text-sm text-gray-500 mb-1">Completed Courses</div>
+            <div class="text-2xl font-bold text-gray-800">7</div>
+            <div class="text-xs text-gray-400 mt-1">
+              <i class="fas fa-check mr-1"></i> All requirements met
+            </div>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100 hover:shadow-md transition-all duration-200">
+            <div class="text-sm text-gray-500 mb-1">Pending Assignments</div>
+            <div class="text-2xl font-bold text-indigo-600">5</div>
+            <div class="text-xs text-orange-500 mt-1">
+              <i class="fas fa-clock mr-1"></i> 2 due this week
+            </div>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100 hover:shadow-md transition-all duration-200">
+            <div class="text-sm text-gray-500 mb-1">Average Grade</div>
+            <div class="text-2xl font-bold text-green-600">87%</div>
+            <div class="text-xs text-green-500 mt-1">
+              <i class="fas fa-arrow-up mr-1"></i> 3% from last term
+            </div>
+          </div>
+        </div>
+
+        <!-- Academic Progress Circular Graph -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <div class="flex justify-between items-center mb-6">
+            <div>
+              <h2 class="text-lg font-bold text-gray-800">Academic Progress</h2>
+              <p class="text-sm text-gray-500">Overall course completion</p>
+            </div>
+          </div>
+          <div class="flex justify-center">
+            <div class="relative w-48 h-48">
+              <canvas id="progressChartDoughnut"></canvas>
+              <div class="absolute inset-0 flex items-center justify-center text-xl font-bold text-gray-800" id="progressChartLabel">75%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course Progress Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-all duration-200">
+            <div class="flex items-start">
+              <div class="w-12 h-12 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 mr-4">
+                <i class="fas fa-code text-xl"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="font-medium text-gray-800">Python API Development</h3>
+                <p class="text-sm text-gray-500 mb-3">Backend Programming</p>
+                <div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+                  <div class="bg-blue-600 h-2.5 rounded-full" style="width: 75%"></div>
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span class="text-gray-500">Progress</span>
+                  <span class="font-medium text-gray-800">75%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm p-5 border border-gray-100 hover:shadow-md transition-all duration-200">
+            <div class="flex items-start">
+              <div class="w-12 h-12 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 mr-4">
+                <i class="fas fa-laptop-code text-xl"></i>
+              </div>
+              <div class="flex-1">
+                <h3 class="font-medium text-gray-800">React Module</h3>
+                <p class="text-sm text-gray-500 mb-3">Frontend Development</p>
+                <div class="w-full bg-gray-200 rounded-full h-2.5 mb-1">
+                  <div class="bg-indigo-600 h-2.5 rounded-full" style="width: 40%"></div>
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span class="text-gray-500">Progress</span>
+                  <span class="font-medium text-gray-800">40%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assignments & Deadlines -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+          <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+            <div>
+              <h2 class="text-lg font-bold text-gray-800">Assignments & Deadlines</h2>
+              <p class="text-sm text-gray-500">Track your upcoming work and submissions</p>
+            </div>
+            <div class="flex space-x-2">
+              <select class="text-sm border rounded-lg px-3 py-1.5 bg-gray-50">
+                <option>All Status</option>
+                <option>Pending</option>
+                <option>Submitted</option>
+                <option>Graded</option>
+              </select>
+              <button class="text-sm text-indigo-600 hover:text-indigo-800 flex items-center">
+                <i class="fas fa-sort mr-1"></i> Sort
+              </button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assignment</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Course</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grade</th>
+                  <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-gray-900">Build REST API</div>
+                    <div class="text-xs text-gray-500">Backend Module</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Python API</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-red-500">May 3, 2025</div>
+                    <div class="text-xs text-gray-500">6 days left</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">In Progress</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">—</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-center">
+                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3 py-1.5 rounded-lg transition-colors duration-200">Submit</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-gray-900">Frontend Module Quiz</div>
+                    <div class="text-xs text-gray-500">Components Section</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">React Module</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-500">May 10, 2025</div>
+                    <div class="text-xs text-gray-500">13 days left</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Pending</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">—</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-center">
+                    <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs px-3 py-1.5 rounded-lg transition-colors duration-200">Start</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm font-medium text-gray-900">Database Design Project</div>
+                    <div class="text-xs text-gray-500">Final Project</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">SQL Fundamentals</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-500">Apr 25, 2025</div>
+                    <div class="text-xs text-gray-500">2 days ago</div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Submitted</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">—</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-center">
+                    <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs px-3 py-1.5 rounded-lg transition-colors duration-200">View</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="px-6 py-3 bg-gray-50 text-right">
+            <button class="text-sm text-indigo-600 hover:text-indigo-800 flex items-center float-right">
+              View all assignments <i class="fas fa-arrow-right ml-1 text-xs"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column - Supporting Info -->
+      <div class="space-y-6">
+        <!-- Profile Stats Summary -->
+        <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl shadow-md p-6 text-white">
+          <div class="flex items-center mb-4">
+            <div class="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center border-2 border-white/70">
+              <span class="text-xl font-bold">JS</span>
+            </div>
+            <div class="ml-4">
+              <h2 class="text-xl font-bold">John Smith</h2>
+              <p class="text-indigo-100">Software Development</p>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-2 mb-2">
+            <div class="text-center p-2 bg-white/10 rounded-lg">
+              <div class="text-2xl font-bold">87%</div>
+              <div class="text-xs text-indigo-100">Avg. Grade</div>
+            </div>
+            <div class="text-center p-2 bg-white/10 rounded-lg">
+              <div class="text-2xl font-bold">11</div>
+              <div class="text-xs text-indigo-100">Courses</div>
+            </div>
+            <div class="text-center p-2 bg-white/10 rounded-lg">
+              <div class="text-2xl font-bold">32</div>
+              <div class="text-xs text-indigo-100">Certificates</div>
+            </div>
+          </div>
+          <div class="mt-4">
+            <button class="bg-white/20 hover:bg-white/30 text-white w-full py-2 rounded-lg text-sm.transition-colors duration-200">
+              View Full Profile
+            </button>
+          </div>
+        </div>
+
+        <!-- Upcoming Schedule -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <h2 class="text-lg font-bold text-gray-800 mb-4">Upcoming Schedule</h2>
+          <div class="space-y-3">
+            <div class="flex p-3 rounded-lg border-l-4 border-indigo-500 bg-indigo-50">
+              <div class="mr-4 flex flex-col items-center justify-center">
+                <div class="text-xs font-bold bg-indigo-100 text-indigo-800 rounded-md px-2 py-1 mb-1">TODAY</div>
+                <div class="text-sm font-medium">14:00</div>
+              </div>
+              <div>
+                <div class="text-sm font-medium text-gray-800">Python API - Session 4</div>
+                <div class="text-xs text-gray-500">Authentication & Security</div>
+                <div class="text-xs text-gray-500 mt-1 flex items-center">
+                  <i class="fas fa-user-circle text-indigo-400 mr-1"></i> Dr. Jane Wilson
+                </div>
+              </div>
+            </div>
+            <div class="flex p-3 rounded-lg border-l-4 border-gray-300 bg-gray-50">
+              <div class="mr-4 flex flex-col items-center justify-center">
+                <div class="text-xs font-bold bg-gray-200 text-gray-600 rounded-md px-2 py-1 mb-1">TUE</div>
+                <div class="text-sm font-medium">10:00</div>
+              </div>
+              <div>
+                <div class="text-sm font-medium text-gray-800">React Module - Components</div>
+                <div class="text-xs text-gray-500">Functional vs Class Components</div>
+                <div class="text-xs text-gray-500 mt-1 flex items-center">
+                  <i class="fas fa-user-circle text-gray-400 mr-1"></i> Prof. Alan Smith
+                </div>
+              </div>
+            </div>
+            <div class="flex p-3 rounded-lg border-l-4 border-gray-300 bg-gray-50">
+              <div class="mr-4 flex flex-col items-center justify-center">
+                <div class="text-xs font-bold bg-gray-200 text-gray-600 rounded-md px-2 py-1 mb-1">THU</div>
+                <div class="text-sm font-medium">13:00</div>
+              </div>
+              <div>
+                <div class="text-sm.font-medium text-gray-800">SQL Fundamentals - Lab</div>
+                <div class="text-xs text-gray-500">Advanced Queries Workshop</div>
+                <div class="text-xs text-gray-500 mt-1 flex items-center">
+                  <i class="fas fa-user-circle text-gray-400 mr-1"></i> Dr. Mark Davis
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 text-center">
+            <button class="text-sm text-indigo-600 hover:text-indigo-800 flex items-center justify-center mx-auto">
+              View full calendar <i class="fas fa-arrow-right ml-1 text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Skills Development -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <h2 class="text-lg font-bold text-gray-800 mb-4">Skills Development</h2>
+          <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="text-center">
+              <div class="relative.mx-auto w-16 h-16 mb-2">
+                <svg class="w-16 h-16">
+                  <circle cx="32" cy="32" r="28" fill="none" stroke="#e5e7eb" stroke-width="4"></circle>
+                  <circle cx="32" cy="32" r="28" fill="none" stroke="#4f46e5" stroke-width="4" stroke-dasharray="175.9" stroke-dashoffset="35.2" class="progress-ring"></circle>
+                </svg>
+                <div class="absolute inset-0 flex items-center justify-center text-sm font-bold text-indigo-600">80%</div>
+              </div>
+              <div class="text-xs font-medium text-gray-800">Python</div>
+            </div>
+            <div class="text-center">
+              <div class="relative.mx-auto w-16 h-16 mb-2">
+                <svg class="w-16 h-16">
+                  <circle cx="32" cy="32" r="28" fill="none" stroke="#e5e7eb" stroke-width="4"></circle>
+                  <circle cx="32" cy="32" r="28" fill="none" stroke="#3b82f6" stroke-width="4" stroke-dasharray="175.9" stroke-dashoffset="70.4" class="progress-ring"></circle>
+                </svg>
+                <div class="absolute inset-0 flex items-center justify-center text-sm font-bold text-blue-600">60%</div>
+              </div>
+              <div class="text-xs font-medium text-gray-800">React</div>
+            </div>
+            <div class="text-center">
+              <div class="relative.mx-auto w-16 h-16 mb-2">
+                <svg class="w-16 h-16">
+                  <circle cx="32" cy="32" r="28" fill="none" stroke="#e5e7eb" stroke-width="4"></circle>
+                  <circle cx="32" cy="32" r="28" fill="none" stroke="#10b981" stroke-width="4" stroke-dasharray="175.9" stroke-dashoffset="17.6" class="progress-ring"></circle>
+                </svg>
+                <div class="absolute inset-0 flex items-center justify-center text-sm font-bold text-green-600">90%</div>
+              </div>
+              <div class="text-xs font-medium text-gray-800">SQL</div>
+            </div>
+          </div>
+          <div class="border-t border-gray-100 pt-4">
+            <div class="font-medium text-gray-800 mb-2">Recommended Skill</div>
+            <div class="flex bg-blue-50 rounded-lg p-3 items-center">
+              <div class="w-10 h-10 mr-3 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center text-white">
+                <i class="fas fa-cloud"></i>
+              </div>
+              <div class="flex-1">
+                <div class="font-medium text-gray-800">AWS Cloud Services</div>
+                <div class="text-xs text-gray-500">Complement your backend skills</div>
+              </div>
+              <button class="text-xs bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded">Explore</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Referral Program -->
+        <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+          <h2 class="text-lg font-bold text-gray-800 mb-4">Referral Program</h2>
+          <div class="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg p-4 mb-4">
+            <div class="text-sm text-gray-600 mb-2">Your referral code:</div>
+            <div class="flex">
+              <input type="text" value="JOHN2025" class="flex-1 border border-gray-200 rounded-l-lg px-3 py-2 bg-white text-gray-800 focus:outline-none" readonly />
+              <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-r-lg transition-colors duration-200">
+                <i class="fas fa-copy"></i>
+              </button>
+            </div>
+          </div>
+          <div class="flex justify-between items-center mb-3">
+            <div class="text-sm font-medium text-gray-600">Friends referred</div>
+            <div class="text-lg font-bold text-gray-800">3</div>
+          </div>
+          <div class="flex justify-between items-center mb-4">
+            <div class="text-sm font-medium text-gray-600">Rewards earned</div>
+            <div class="text-lg font-bold text-green-600">$75</div>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-1.5 mb-4">
+            <div class="bg-indigo-600 h-1.5 rounded-full" style="width: 60%"></div>
+          </div>
+          <div class="text-xs text-gray-500 text-center mb-4">3 of 5 referrals needed for next reward tier</div>
+          <div class="mt-2 text-center">
+            <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-lg text-sm font-medium w-full transition-colors duration-200 shadow-sm hover:shadow">
+              <i class="fas fa-share-alt mr-1"></i> Invite Friends
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.onload = function() {
+      const ctx = document.getElementById('progressChartDoughnut').getContext('2d');
+      const progressValue = 75; // Adjust dynamically if needed
+
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Completed', 'Remaining'],
+          datasets: [{
+            data: [progressValue, 100 - progressValue],
+            backgroundColor: ['#4f46e5', '#e5e7eb'],
+            hoverBackgroundColor: ['#4f46e5', '#e5e7eb'],
+            cutout: '70%'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { enabled: false }
+          }
+        }
+      });
+
+      document.getElementById('progressChartLabel').innerText = progressValue + '%';
+    };
+  </script>
+</body>
+</html>
